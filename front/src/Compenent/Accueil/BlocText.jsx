@@ -7,7 +7,7 @@ import Image4 from "../../../public/BlocText/Bloc8.png";
 const InfoBlock = ({ image, title, description }) => {
     return (
         <motion.div
-            className="relative bg-gray-100 rounded-lg shadow-lg p-6 flex items-center justify-center text-center h-[50vh]"
+            className="relative rounded-lg shadow-lg p-6 flex items-center justify-center text-center h-[50vh]"
             style={{
                 backgroundImage: `url(${image})`,
                 backgroundSize: 'cover',
@@ -18,9 +18,10 @@ const InfoBlock = ({ image, title, description }) => {
             transition={{ duration: 0.8, ease: "easeOut" }}
             viewport={{ once: true }}
         >
-            <div className="text-white p-4 rounded-md px-40 bg-black/50">
+            <div className="text-white p-4">
                 <h3 className="text-2xl font-bold mb-2">{title}</h3>
                 <p className="text-sm">{description}</p>
+
             </div>
         </motion.div>
     );
@@ -56,8 +57,8 @@ const InfoGrid = () => {
 
     return (
         <div className="container mx-auto px-4 py-10">
-            <h1 className="text-4xl font-bold text-center text-black mb-8">
-                Our Features
+            <h1 className="text-5xl font-bold text-center text-white mb-10">
+                NOTRE QUALITÉ
             </h1>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {blocks.map((block, index) => (

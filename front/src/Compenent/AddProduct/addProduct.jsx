@@ -1,48 +1,86 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
+import { FaPlus, FaEdit, FaTrash } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 const AddProductForm = () => {
     const [formData, setFormData] = useState({
+        id: '',
         title: '',
         price: '',
         rating: 1,
-        image: ''
+        image: '',
+        stock: ''
     });
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
     const [products, setProducts] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [productsPerPage] = useState(3);
     const [searchQuery, setSearchQuery] = useState('');
+    const [showForm, setShowForm] = useState(false);
+    const [editMode, setEditMode] = useState(false);
+    const [editProductId, setEditProductId] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [productsPerPage] = useState(10);
 
-    // Mise à jour des champs du formulaire
+    useEffect(() => {
+        fetchProducts();
+    }, []);
+
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    // Ajouter un produit
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        setError('');
 
         try {
-            const response = await axios.post('http://localhost:8000/api/products', formData);
-            if (response.status === 201) {
+            const productData = {
+                ...formData,
+                price: parseFloat(formData.price),
+                rating: parseFloat(formData.rating),
+                stock: parseInt(formData.stock)
+            };
+
+            if (editMode) {
+                const existingProduct = products.find(product => product.id === formData.id && product.id !== editProductId);
+                if (existingProduct) {
+                    Swal.fire({
+                        title: 'Erreur',
+                        text: `L'ID ${formData.id} existe déjà.`,
+                        icon: 'error',
+                        confirmButtonColor: '#000'
+                    });
+                    return;
+                }
+
+                await axios.put(`http://localhost:8000/api/products/${editProductId}`, productData);
+                Swal.fire({
+                    title: 'Succès !',
+                    text: 'Produit modifié avec succès !',
+                    icon: 'success',
+                    confirmButtonColor: '#000'
+                });
+            } else {
+                await axios.post('http://localhost:8000/api/products', productData);
                 Swal.fire({
                     title: 'Succès !',
                     text: 'Produit ajouté avec succès !',
                     icon: 'success',
-                    confirmButtonColor: '#000', // Bouton noir selon ton design
-                    confirmButtonText: 'OK'
-                });                setFormData({ title: '', price: '', rating: 1, image: '' });
-                fetchProducts(); // Recharger la liste des produits après ajout
+                    confirmButtonColor: '#000'
+                });
             }
+
+            setFormData({ id: '', title: '', price: '', rating: 1, image: '', stock: '' });
+            setShowForm(false);
+            setEditMode(false);
+            setEditProductId(null);
+            fetchProducts();
         } catch (err) {
+            console.error(err);
             Swal.fire({
                 title: 'Erreur',
-                text: 'Erreur lors de l\'ajout du produit.',
+                text: 'Erreur lors de l\'opération.',
                 icon: 'error',
                 confirmButtonColor: '#000'
             });
@@ -51,30 +89,36 @@ const AddProductForm = () => {
         }
     };
 
-    // Supprimer un produit
-    const handleDelete = async (id) => {
+    const fetchProducts = async () => {
+        try {
+            const response = await axios.get('http://localhost:8000/api/products');
+            setProducts(response.data.reverse());
+        } catch (err) {
+            console.error('Erreur récupération produits:', err);
+        }
+    };
+
+    const handleDelete = (id) => {
         Swal.fire({
             title: 'Êtes-vous sûr ?',
-            text: 'Cette action est irréversible !',
+            text: "Cette action est irréversible !",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#d33', // Bouton rouge pour suppression
-            cancelButtonColor: '#000',  // Bouton noir pour annuler
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
             confirmButtonText: 'Oui, supprimer',
             cancelButtonText: 'Annuler'
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
                     await axios.delete(`http://localhost:8000/api/products/${id}`);
-
                     Swal.fire({
                         title: 'Supprimé !',
                         text: 'Produit supprimé avec succès.',
                         icon: 'success',
-                        confirmButtonColor: '#000' // Bouton noir pour ton design
+                        confirmButtonColor: '#000'
                     });
-
-                    fetchProducts(); // Rafraîchir la liste
+                    fetchProducts();
                 } catch (err) {
                     Swal.fire({
                         title: 'Erreur',
@@ -87,156 +131,163 @@ const AddProductForm = () => {
         });
     };
 
+    const handleEdit = (product) => {
+        setFormData({
+            id: product.id,
+            title: product.title,
+            price: product.price,
+            rating: product.rating,
+            image: product.image,
+            stock: product.stock
+        });
+        setEditMode(true);
+        setEditProductId(product.id);
+        setShowForm(true);
+    };
 
-    // Récupérer les produits
-    const fetchProducts = async () => {
-        try {
-            const response = await axios.get('http://localhost:8000/api/products');
-            // Trier les produits par date ou ID pour afficher les nouveaux produits en premier
-            const sortedProducts = response.data.reverse();  // Inverser l'ordre des produits
-            setProducts(sortedProducts);
-        } catch (err) {
-            console.error('Erreur récupération produits:', err);
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+    const totalPages = Math.ceil(products.length / productsPerPage);
+
+    const handlePrevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
         }
     };
 
-    useEffect(() => {
-        fetchProducts(); // Charger les produits au démarrage
-    }, []);
-
-    // Calculer les produits à afficher pour la page courante
-    const indexOfLastProduct = currentPage * productsPerPage;
-    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    const filteredProducts = products.filter(product =>
-        product.title.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
-
-    // Changer de page
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+    const handleNextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
 
     return (
-        <div className="flex justify-between max-w-full mx-auto p-20 mt-28 ">
-            {/* Formulaire d'ajout */}
-            <div className="w-1/2 bg-gradient-to-r from-indigo-500 to-blue-500 shadow-lg rounded-lg p-6">
-                <h2 className="text-2xl font-bold text-center text-white mb-4">Ajouter un Produit</h2>
-                {error && <p className="text-red-500 text-center">{error}</p>}
+        <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="flex h-screen flex-col p-10">
+            <h3 className="text-5xl text-white font-light my-5 mb-10 ">LISTES DES PRODUITS </h3>
 
-                <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-lg shadow-md">
-                    <input
-                        type="text"
-                        name="title"
-                        value={formData.title}
-                        onChange={handleChange}
-                        placeholder="Nom du produit"
-                        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        required
-                    />
-
-                    <input
-                        type="number"
-                        name="price"
-                        value={formData.price}
-                        onChange={handleChange}
-                        placeholder="Prix"
-                        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        required
-                    />
-
-                    <input
-                        type="number"
-                        name="rating"
-                        value={formData.rating}
-                        onChange={handleChange}
-                        min="1" max="5"
-                        placeholder="Note (1-5)"
-                        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        required
-                    />
-
-                    <input
-                        type="text"
-                        name="image"
-                        value={formData.image}
-                        onChange={handleChange}
-                        placeholder="URL de l'image"
-                        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    />
-
-                    <button
-                        type="submit"
-                        className="w-full bg-blue-600 text-white p-3 rounded-lg transition duration-300 ease-in-out hover:bg-blue-500"
-                        disabled={loading}
-                    >
-                        {loading ? 'Ajout...' : 'Ajouter'}
-                    </button>
-                </form>
-            </div>
-
-            {/* Liste des produits */}
-            <div className="w-1/2 ml-8 bg-white p-6 rounded-lg shadow-md px-20">
-                <h3 className="text-xl font-bold mb-3">Produits</h3>
-
-                {/* Barre de recherche */}
+            <div className="mb-5 flex justify-start">
                 <input
                     type="text"
-                    placeholder="Rechercher un produit"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full p-3 border rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    placeholder="Rechercher un produit"
+                    className="p-3 w-1/3 border rounded-lg text-white bg-black"
                 />
-
-                {filteredProducts.length === 0 ? (
-                    <p>Aucun produit trouvé</p>
-                ) : (
-                    <ul className="space-y-4">
-                        {currentProducts.map((product) => (
-                            <li
-                                key={product.id}
-                                className="flex items-center justify-between bg-white p-4 rounded-lg shadow-md border border-gray-200 transition-transform transform hover:scale-105"
-                            >
-                                <div className="flex items-center gap-4 ">
-                                    <div>
-                                        <p className="text-xs text-gray-400">ID: {product.id}</p>
-                                        <h3 className="font-semibold text-lg">{product.title}</h3>
-                                        <p className="text-gray-600">${product.price} | ⭐ {product.rating}/5</p>
-                                    </div>
-                                    <img src={product.image} alt={product.title} className={"w-1/3 ml-10"}/>
-                                </div>
-                                <button
-                                    onClick={() => handleDelete(product.id)}
-                                    className="px-8 py-3 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-red-600 transition"
-                                >
-                                    Supprimer
-                                </button>
-                            </li>
-                        ))}
-                    </ul>
-                )}
-
-                {/* Pagination */}
-                <div className="flex justify-center mt-4">
-                    <button
-                        onClick={() => paginate(currentPage - 1)}
-                        disabled={currentPage === 1}
-                        className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:opacity-50"
-                    >
-                        Précédent
-                    </button>
-                    <span className="px-4 py-2 text-gray-700">
-                        Page {currentPage}
-                    </span>
-                    <button
-                        onClick={() => paginate(currentPage + 1)}
-                        disabled={currentPage * productsPerPage >= filteredProducts.length}
-                        className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:opacity-50"
-                    >
-                        Suivant
-                    </button>
-                </div>
             </div>
-        </div>
-    );
-};
 
-export default AddProductForm;
+                <div className="w-full p-10 overflow-auto bg-opacity-25 bg-white rounded-xl">
+                    <div className="flex justify-end mb-8">
+                        <button
+                            onClick={() => {
+                                setShowForm(true);
+                                setEditMode(false);
+                                setFormData({id: '', title: '', price: '', rating: 1, image: '', stock: ''});
+                            }}
+                            className="px-8 py-4 bg-transparent border-2 text-white rounded-lg hover:bg-white hover:text-black"
+                        >
+                            <FaPlus className="inline mr-2"/> Ajouter un produit
+                        </button>
+                    </div>
+                    <ul className="space-y-4">
+                        {currentProducts
+                            .filter(product => product.title.toLowerCase().includes(searchQuery.toLowerCase()))
+                            .map((product) => (
+                                <li key={product.id}
+                                    className="flex items-center justify-between p-4 rounded-xl shadow-md bg-black bg-opacity-10 border border-gray-200">
+                                    <div className="flex items-center gap-4">
+                                        {product.image && (
+                                            <img src={product.image} alt={product.title}
+                                                 className="w-32 h-auto object-cover"/>
+                                        )}
+                                        <div>
+                                            <h3 className="font-semibold text-lg text-white">{product.title}</h3>
+                                            <p className="text-white">${product.price} | ⭐ {product.rating}/5 |
+                                                Stock: {product.stock}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <button
+                                            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500"
+                                            onClick={() => handleEdit(product)}>
+                                            <FaEdit className="inline mr-2"/> Modifier
+                                        </button>
+                                        <button className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500"
+                                                onClick={() => handleDelete(product.id)}>
+                                            <FaTrash className="inline mr-2"/> Supprimer
+                                        </button>
+                                    </div>
+                                </li>
+                            ))}
+                    </ul>
+
+                    <div className="flex justify-center space-x-4 mt-10">
+                        <button onClick={handlePrevPage} className="px-4 py-2 border bg-white"
+                                disabled={currentPage === 1}>
+                            Précédent
+                        </button>
+                        <div className="flex space-x-2">
+                            {Array.from({length: totalPages}, (_, index) => (
+                                <button key={index + 1} onClick={() => paginate(index + 1)}
+                                        className={`px-4 py-2 border ${currentPage === index + 1 ? 'bg-blue-600 text-white' : 'bg-white'}`}>
+                                    {index + 1}
+                                </button>
+                            ))}
+                        </div>
+                        <button onClick={handleNextPage} className="px-4 py-2 border bg-white"
+                                disabled={currentPage === totalPages}>
+                            Suivant
+                        </button>
+                    </div>
+                </div>
+
+                {showForm && (
+                    <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
+                        <div className="bg-white bg-opacity-50 p-10 rounded-lg shadow-3xl absolute right-64 w-1/2">
+                            <button
+                                className="absolute top-2 right-2 text-sm text-white bg-white hover:bg-gray-200 px-4 py-3 rounded-full "
+                                onClick={() => setShowForm(false)}>
+                                ✖
+                            </button>
+                            <h2 className="text-4xl mb-5 font-light text-white text-center ">{editMode ? 'MODIFIER LE PRODUIT' : 'AJOUTER UN PRODUIT'}</h2>
+                            <form onSubmit={handleSubmit} className="space-y-4">
+                                <input
+                                    type="text"
+                                    name="id"
+                                    value={formData.id}
+                                    onChange={handleChange}
+                                    placeholder="ID du produit"
+                                    className="w-full p-3 border bg-black text-white rounded-lg"
+                                    required
+                                />
+                                <input type="text" name="title" value={formData.title} onChange={handleChange}
+                                       placeholder="Nom du produit" className="w-full p-3 border bg-black text-white rounded-lg" required/>
+                                <input type="number" name="price" value={formData.price} onChange={handleChange}
+                                       placeholder="Prix" className="w-full p-3 border bg-black text-white rounded-lg" required/>
+                                <input type="number" name="rating" value={formData.rating} onChange={handleChange}
+                                       min="1"
+                                       max="5" placeholder="Note (1-5)" className="w-full p-3 border bg-black text-white rounded-lg"/>
+                                <input type="text" name="image" value={formData.image} onChange={handleChange}
+                                       placeholder="URL de l'image" className="w-full p-3 border bg-black text-white rounded-lg" required/>
+                                <input type="number" name="stock" value={formData.stock} onChange={handleChange}
+                                       placeholder="Quantité en stock" className="w-full p-3 border bg-black text-white rounded-lg"
+                                       required/>
+                                <button type="submit"
+                                        className="w-1/4 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-500">
+                                    {loading ? 'Chargement...' : editMode ? 'Mettre à jour' : 'Ajouter'}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                )}
+            </motion.div>
+            );
+            };
+
+            export default AddProductForm;

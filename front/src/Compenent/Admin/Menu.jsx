@@ -1,58 +1,83 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { FaHome, FaUser, FaCog, FaBars, FaTimes } from "react-icons/fa";
+import { Link, useLocation } from "react-router-dom";
+import Logo from "../../assets/Logo/Logo_01.png";
+import { FaPlus, FaEdit, FaUserPlus, FaUserCircle,FaHome } from "react-icons/fa";
 
-const AdminPage = () => {
-    const [menuOpen, setMenuOpen] = useState(false);
+const Sidebar = () => {
+    const location = useLocation();
 
     return (
-        <div className="flex min-h-screen bg-gray-100">
-            {/* Sidebar */}
-            <motion.div
-                initial={{ x: -250 }}
-                animate={{ x: 0 }}
-                transition={{ duration: 0.5 }}
-                className={`bg-gray-900 text-white w-1/5 min-h-screen p-5 fixed md:relative ${menuOpen ? "left-0" : "-left-60"} md:left-0 transition-all duration-300 z-50`}
-            >
-                <div className="flex items-center justify-between mb-8">
-                    <h2 className="text-xl font-bold">Admin Panel</h2>
-                    <button
-                        className="text-white md:hidden"
-                        onClick={() => setMenuOpen(false)}
+        <div className="w-1/4 h-screen bg-white/20 text-white fixed left-0 top-0 p-6 flex flex-col items-center rounded-r-3xl shadow-lg backdrop-blur-lg">
+
+            {/* Logo */}
+            <Link to="/" className="mb-10">
+                <img className="w-20 h-auto" src={Logo} alt="Logo" />
+            </Link>
+
+            {/* Menu */}
+            <ul className="space-y-4 w-full">
+                <li>
+                    <Link
+                        to="/accueiladmin"
+                        className={`flex items-center gap-3 px-4 py-4 rounded-xl transition duration-300 ${
+                            location.pathname === "/accueiladmin"
+                                ? "bg-white text-black font-semibold shadow-md"
+                                : "hover:bg-gray-700/50"
+                        }`}
                     >
-                        <FaTimes size={24} />
-                    </button>
-                </div>
-                <nav className="space-y-4">
-                    <a href="#" className="flex items-center space-x-2 hover:bg-gray-700 p-2 rounded">
-                        <FaHome /> <span>Dashboard</span>
-                    </a>
-                    <a href="#" className="flex items-center space-x-2 hover:bg-gray-700 p-2 rounded">
-                        <FaUser /> <span>Utilisateurs</span>
-                    </a>
-                    <a href="#" className="flex items-center space-x-2 hover:bg-gray-700 p-2 rounded">
-                        <FaCog /> <span>Paramètres</span>
-                    </a>
-                </nav>
-            </motion.div>
-
-            {/* Contenu Principal */}
-            <div className="flex-1 md:ml-1/5 p-6 transition-all duration-300">
-                {/* Menu Burger pour Mobile */}
-                <button
-                    className="text-gray-900 md:hidden absolute top-4 left-4"
-                    onClick={() => setMenuOpen(true)}
-                >
-                    <FaBars size={24} />
-                </button>
-
-                <h1 className="text-2xl font-bold">Bienvenue sur l'Admin Panel</h1>
-                <p className="mt-4 text-gray-700">
-                    Ceci est une page d'administration où tu peux gérer tes utilisateurs, configurations et plus encore.
-                </p>
-            </div>
+                        <FaHome className="text-lg"/> Accueil
+                    </Link>
+                </li>
+                <li>
+                    <Link
+                        to="/addproduct"
+                        className={`flex items-center gap-3 px-4 py-4 rounded-xl transition duration-300 ${
+                            location.pathname === "/addproduct"
+                                ? "bg-white text-black font-semibold shadow-md"
+                                : "hover:bg-gray-700/50"
+                        }`}
+                    >
+                        <FaPlus className="text-lg"/> Ajouter un produit
+                    </Link>
+                </li>
+                <li>
+                    <Link
+                        to="/listeutilisateurs"
+                        className={`flex items-center gap-3 px-4 py-4 rounded-xl transition duration-300 ${
+                            location.pathname === "/listeutilisateurs"
+                                ? "bg-white text-black font-semibold shadow-md"
+                                : "hover:bg-gray-700/50"
+                        }`}
+                    >
+                        <FaUserCircle className="text-lg"/> Listes des utilisateur
+                    </Link>
+                </li>
+                <li>
+                    <Link
+                        to="/adduser"
+                        className={`flex items-center gap-3 px-4 py-4 rounded-xl transition duration-300 ${
+                            location.pathname === "/adduser"
+                                ? "bg-white text-black font-semibold shadow-md"
+                                : "hover:bg-gray-700/50"
+                        }`}
+                    >
+                        <FaUserPlus className="text-lg"/> Ajouter un utilisateur
+                    </Link>
+                </li>
+                <li>
+                    <Link
+                        to="/updateuser/:id"
+                        className={`flex items-center gap-3 px-4 py-4 rounded-xl transition duration-300 ${
+                            location.pathname.startsWith("/updateuser")
+                                ? "bg-white text-black font-semibold shadow-md"
+                                : "hover:bg-gray-700/50"
+                        }`}
+                    >
+                        <FaEdit className="text-lg"/> Modifier un utilisateur
+                    </Link>
+                </li>
+            </ul>
         </div>
     );
 };
 
-export default AdminPage;
+export default Sidebar;

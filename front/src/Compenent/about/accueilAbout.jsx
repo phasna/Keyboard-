@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+
 
 const AnimatedTitle = () => {
     const titles = ["Réactivité", "Puissance", "Performance"];
@@ -35,11 +37,13 @@ const AnimatedTitle = () => {
                 Notre société conçoit des claviers gaming performants et innovants, alliant réactivité, confort et
                 durabilité.
             </p>
+            <Link to={"/shop"}>
             <button
-                className="rounded-lg text-black bg-white w-64 mt-14 px-3 py-4 relative overflow-hidden transition-all duration-300 before:absolute before:inset-0 before:bg-gradient-to-r before:from-zinc-300 before:to-zinc-500 before:w-0 before:h-full before:transition-all before:duration-700 hover:before:w-full"
+                className="rounded-lg bg-transparent border-2 text-white hover:text-black w-64 mt-14 px-3 py-4 relative overflow-hidden transition-all duration-300 before:absolute before:inset-0 before:bg-gradient-to-r before:from-zinc-100 before:to-white before:w-0 before:h-full before:transition-all before:duration-700 hover:before:w-full"
             >
                 <span className="relative z-10">Acheter</span>
             </button>
+            </Link>
 
 
         </div>

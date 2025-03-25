@@ -112,8 +112,8 @@ const ProductGrid = () => {
 
     return (
         <div className="px-10 py-10 container mx-auto md:mb-40">
-            <h1 className="text-7xl font-medium text-center text-green-400 mb-20 bg-gradient-to-r from-white via-gray-400 to-gray-600 text-transparent bg-clip-text">
-                Nos produits
+            <h1 className="text-5xl font-light text-center text-green-400 mb-20 bg-gradient-to-r from-white via-gray-400 to-gray-600 text-transparent bg-clip-text">
+                NOS TOP DES PRODUITS !
             </h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 {products.length > 0 ? (

@@ -4,6 +4,8 @@ import BlocText from "../Compenent/Accueil/BlocText.jsx";
 import Info from "../Compenent/Accueil/info.jsx";
 import Text from "../Compenent/Accueil/Text.jsx";
 import Fotter from "../Compenent/Fotter.jsx";
+import BlocImage from '../Compenent/Conatct/BlocImage.jsx';
+
 
 function App() {
     return (
@@ -13,10 +15,9 @@ function App() {
                 <div className="flex-grow">
                     <Accueil />
                 </div>
-                <BlocProduct />
-                <BlocText />
-                <Text />
                 <Info />
+                {/*<BlocImage />*/}
+                <BlocProduct />Ò
                 <Fotter/>
 
             </div>

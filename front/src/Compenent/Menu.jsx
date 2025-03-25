@@ -53,7 +53,7 @@ const Navbar = () => {
 
     const menuItems = [
         { name: "Home", path: "/" },
-        { name: "Shop", path: "/shop" },
+        { name: "Produites", path: "/shop" },
         { name: "À propos", path: "/about" },
         { name: "Contact", path: "/contact" }
     ];
@@ -69,7 +69,7 @@ const Navbar = () => {
                     </Link>
                 </div>
 
-                {/* Menu Burger (Mobile) */}
+                {/* Bloc Burger (Mobile) */}
                 <button
                     className="md:hidden text-2xl text-white z-50"
                     onClick={() => setIsOpen(!isOpen)}
@@ -78,7 +78,7 @@ const Navbar = () => {
                 </button>
             </div>
 
-            {/* Menu Desktop */}
+            {/* Bloc Desktop */}
             <ul className="hidden md:flex justify-center gap-8 text-lg text-white mt-10">
                 {menuItems.map((item, index) => {
                     const isActive = location.pathname === item.path;
@@ -108,13 +108,13 @@ const Navbar = () => {
                             </span>
                         )}
                     </Link>
-                    <Link to="/profile">
+                    <Link to="/connexion">
                         <FaUser />
                     </Link>
                 </div>
             </ul>
 
-            {/* Menu Mobile (Sans Overflow) */}
+            {/* Bloc Mobile (Sans Overflow) */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
@@ -157,7 +157,7 @@ const Navbar = () => {
                                     </span>
                                 )}
                             </Link>
-                            <Link to="/profile">
+                            <Link to="/connexion">
                                 <FaUser />
                             </Link>
                         </div>

@@ -27,11 +27,11 @@ const BentoGrid = () => {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, ease: "easeOut" }}
         >
-            <h1 className="text-7xl font-bold text-center text-green-400 mb-20 bg-gradient-to-r from-white via-gray-400 to-gray-600 text-transparent bg-clip-text">
+            <h1 className="text-7xl font-bold text-center text-green-400 my-20 bg-gradient-to-r from-white via-gray-400 to-gray-600 text-transparent bg-clip-text">
                 Nos qualités
             </h1>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-6 max-w-7xl mx-auto md:mb-40">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-6 container mx-auto md:mb-40">
                 {gridItems.map((item) => (
                     <motion.div
                         key={item.id}

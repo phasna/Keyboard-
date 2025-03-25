@@ -30,8 +30,8 @@ const ReviewCard = ({ img, name, username, body }) => {
 
 export default function TextScroll3D() {
     return (
-        <div className={"mb-20 text-white"}>
-            <h1 className={" text-center text-5xl p-10 font-medium h-32 bg-gradient-to-r from-gray-600 via-white to-gray-600 text-transparent bg-clip-text"}>
+        <div className={"my-20 text-white"}>
+            <h1 className={" text-center text-5xl p-10 font-light h-32 bg-gradient-to-r from-gray-600 via-white to-gray-600 text-transparent bg-clip-text"}>
                 AVIS DE NOTRE CLIENTS
             </h1>
             <div className="relative flex w-full items-center justify-center overflow-hidden [perspective:1000px] h-40">

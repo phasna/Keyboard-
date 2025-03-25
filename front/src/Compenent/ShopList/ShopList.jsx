@@ -102,20 +102,19 @@ const ProductGrid = () => {
                 <input
                     type="text"
                     placeholder="Rechercher un produit..."
-                    className="p-3 border border-gray-300 rounded-lg w-1/3"
+                    className="p-3 border bg-black rounded-lg w-1/3"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
                 <div className="flex gap-4">
                     {/* Sélecteur de tri */}
                     <div>
-                        <label className="text-white">Filtrer par: </label>
                         <select
                             value={sortOption}
                             onChange={(e) => setSortOption(e.target.value)}
-                            className="p-2 border border-gray-300 rounded-lg"
+                            className="p-4 border border-gray-300 rounded-lg bg-black text-white"
                         >
-                            <option value="other">Autre Option</option>
+                            <option value="other">Trier votre prix</option>
                             <option value="ascending">Prix Croissant</option>
                             <option value="descending">Prix Décroissant</option>
                         </select>

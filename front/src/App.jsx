@@ -1,11 +1,19 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Menu from "./Compenent/Menu.jsx";
 import Accueil from "./Page/Accueil.jsx";
+import Contact from "./Page/Contact.jsx";
 import ShopList from "./Page/ShopList.jsx";
 import About from "./Page/about.jsx";
 import ProductDetail from "../src/Compenent/ShopList/ProductDedail.jsx";
-import Pagner from "../src/Compenent/Pagner/pagner.jsx";
+import Pagner from "../src/Compenent/Panier/StepGroupe.jsx";
 import AddProduct from "../src/Compenent/AddProduct/addProduct.jsx";
+import UpdateProduct from "../src/Compenent/AddProduct/updateProduct.jsx";
+
+//Layout
+import Layout_Admin from "../src/Compenent/Layout_Admin.jsx";
+import Layout_User from "../src/Compenent/Layout_User.jsx";
+
+//Admin
+import Menu_Admin from "./Page/Admin/Interface.jsx"
 
 // Page connexion
 
@@ -13,9 +21,11 @@ import Connexion from "./Page/Connexion.jsx";
 
 //Admin
 import Admin from "./Page/Admin/Admin.jsx";
+import ListeUser from "./Page/Admin/ListeUser.jsx";
+import AddUser from "./Page/Admin/AddUser.jsx";
+import UpdateUser from "./Page/Admin/UpdateUser.jsx";
+import AccueilAdmin from "./Page/Admin/Accueil.jsx";
 
-
-import Fotter from "../src/Compenent/Fotter.jsx";
 
 
 
@@ -23,23 +33,33 @@ function App() {
     return (
         <div>
             <Router>
-                <div className="h-screen flex flex-col bg-black">
-                    {/* Menu */}
-                    <div className="flex-shrink-0">
-                        <Menu/>
-                    </div>
+                <div className="h-screen flex flex-col">
+                    {/* Bloc */}
 
                     {/* Contenu principal */}
-                    <div className="flex-grow bg-black">
+                    <div className="flex-grow">
                         <Routes>
+                            <Route element={<Layout_Admin />}>
+                                <Route path="/accueilAdmin" element={<AccueilAdmin/>}/>
+                                <Route path="/Admin_interface" element={<Menu_Admin/>}/>
+                                <Route path="/addproduct" element={<AddProduct/>}/>
+                                <Route path="/updateproduct" element={<UpdateProduct/>}/>
+                                <Route path="/adduser" element={<AddUser/>}/>
+                                <Route path="/updateuser/:id" element={<UpdateUser/>}/>
+                                <Route path="/listeutilisateurs" element={<ListeUser/>}/>
+                            </Route>
+
+                            <Route element={<Layout_User/>}>
+                                <Route path="/" element={<Accueil/>}/>
+                                <Route path="/shop" element={<ShopList/>}/>
+                                <Route path="/about" element={<About/>}/>
+                                <Route path="/contact" element={<Contact/>}/>
+                                <Route path="/panier" element={<Pagner/>}/>
+                                <Route path="/product/:productId" component={ProductDetail} />
+                            </Route>
+
                             <Route path="/Connexion" element={<Connexion/>}/>
                             <Route path="/admin" element={<Admin/>}/>
-                            <Route path="/" element={<Accueil/>}/>
-                            <Route path="/shop" element={<ShopList/>}/>
-                            <Route path="/about" element={<About/>}/>
-                            <Route path="/addproduct" element={<AddProduct/>}/>
-                            <Route path="/panier" element={<Pagner/>}/>
-                            <Route path="/product/:productId" component={ProductDetail} />
                         </Routes>
                     </div>
 

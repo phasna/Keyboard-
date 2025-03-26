@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:8889
--- Généré le : mar. 25 mars 2025 à 10:13
+-- Généré le : mar. 25 mars 2025 à 14:54
 -- Version du serveur : 8.0.35
 -- Version de PHP : 8.2.20
 
@@ -20,6 +20,32 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `Clavier`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `clients`
+--
+
+CREATE TABLE `clients` (
+  `id` int NOT NULL,
+  `nom` varchar(100) NOT NULL,
+  `prenom` varchar(100) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `telephone` varchar(20) DEFAULT NULL,
+  `adresse` text,
+  `identifiant` varchar(255) NOT NULL,
+  `mot_de_passe` varchar(255) NOT NULL,
+  `date_inscription` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `clients`
+--
+
+INSERT INTO `clients` (`id`, `nom`, `prenom`, `email`, `telephone`, `adresse`, `identifiant`, `mot_de_passe`, `date_inscription`) VALUES
+(1, 'chhung', 'Cruz-Aun', 'phasna.aun@afip-formations.com', '0652473681', '1 allée des peuplier', 'Chhung ', 'Davith', '2025-03-25 14:51:58'),
+(2, 'Lola', 'Cruz-Aun', 'Lola@gmail.com', '0652473681', '1 allée des peuplier', 'TITI', 'TITI123', '2025-03-25 14:53:33');
 
 -- --------------------------------------------------------
 
@@ -51,7 +77,7 @@ INSERT INTO `Product` (`id`, `image`, `title`, `price`, `rating`, `stock`) VALUE
 (10, 'BlocText/keyboad.png', 'Claver 76%', 125.00, 1, 5),
 (44, 'Clavier/bureau.png', 'Clavier mondial', 89.00, 5, 25),
 (45, 'Clavier/mecanique62.png', 'Clavier Monster', 55.00, 3, 10),
-(52, 'Clavier/mecanique.png', 'test clavier', 55.00, 4, 35);
+(52, 'Clavier/mecanique.png', 'Clavier Alfa', 55.00, 4, 35);
 
 -- --------------------------------------------------------
 
@@ -69,27 +95,26 @@ CREATE TABLE `user` (
   `email` varchar(255) DEFAULT NULL,
   `telephone` varchar(20) DEFAULT NULL,
   `adresse` text,
-  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `role` varchar(255) NOT NULL DEFAULT 'user'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `user`
 --
 
-INSERT INTO `user` (`id`, `identifiant`, `mot_de_passe`, `date_creation`, `nom`, `prenom`, `email`, `telephone`, `adresse`, `image`) VALUES
-(1, 'Davith', 'password123', '2025-02-19 16:23:09', 'Sara', 'lona', 'sara@example.com', '1234567890', '123 Main St', 'ImageUser/user.png\r\n'),
-(2, 'Cruz', 'password456', '2025-02-19 16:23:09', 'thun', 'sophech', 'jane.doe@example.com', '0987654321', '456 Oak St', 'ImageUser/user_1.png'),
-(3, 'Phannith', 'password789', '2025-02-19 16:23:09', 'phannith', 'cruz aun', 'michael.smith@example.com', '1112233445', '789 Pine St', 'ImageUser/user_2.png'),
-(4, 'emilyjones', 'password101', '2025-02-19 16:23:09', 'steve', 'yoan', 'emily.jones@example.com', '2233445566', '101 Maple St', 'ImageUser/user_3.png'),
-(5, 'danielbrown', 'password202', '2025-02-19 16:23:09', 'Brown', 'Daniel', 'daniel.brown@example.com', '3344556677', '202 Elm St', 'ImageUser/user_2.png'),
-(6, 'laurawilson', 'password303', '2025-02-19 16:23:09', 'Wilson', 'Laura', 'laura.wilson@example.com', '4455667788', '303 Birch St', 'ImageUser/user_3.png'),
-(7, 'alexmartin', 'password404', '2025-02-19 16:23:09', 'fafa', 'Alex', 'alex.martin@example.com', '5566778899', '404 Cedar St', 'ImageUser/user.png'),
-(8, 'sarahlee', 'password505', '2025-02-19 16:23:09', 'Lee', 'Sarah', 'sarah.lee@example.com', '6677889900', '505 Willow St', ''),
-(9, 'robertdavis', 'password606', '2025-02-19 16:23:09', 'Davis', 'Robert', 'robert.davis@example.com', '7788990011', '606 Pineapple St', ''),
-(10, 'lindawalker', 'password707', '2025-02-19 16:23:09', 'Walker', 'Linda', 'linda.walker@example.com', '8899001122', '707 Cherry St', 'ImageUser/user_1.png'),
-(11, 'Phasna', '123AZERT', '2025-02-20 08:22:51', 'PHASNA', 'AUN', 'phasna@69gmail.com', '0678765324', '69310 PI', 'ImageUser/user_3.png'),
-(12, 'P_aun', '$2b$10$30sTuZLzk8V.EhK4v5X2eu3FPhexSzVSX0CSGR3JkiGOigMcTnzUu', '2025-02-20 14:22:05', 'Phasna', 'GG', NULL, NULL, NULL, NULL),
-(13, 'Tiago', '$2b$10$EO4EGDAAOd3QONkdj7QLW.HnIegEdsKAd5tJ4fLNnTCQlzNqAvkGS', '2025-02-20 14:25:10', 'benja', 'Tiago', NULL, NULL, NULL, NULL);
+INSERT INTO `user` (`id`, `identifiant`, `mot_de_passe`, `date_creation`, `nom`, `prenom`, `email`, `telephone`, `adresse`, `image`, `role`) VALUES
+(1, 'Davith', 'Davith123', '2025-02-19 16:23:09', 'Sara', 'lona', 'sara@example.com', '1234567890', '26 rue de gare oullins ', 'ImageUser/user.png\r\n', 'user'),
+(2, 'Cruz', 'password456', '2025-02-19 16:23:09', 'thun', 'sophech', 'jane.doe@example.com', '0987654321', '456 Oak St', 'ImageUser/user_1.png', 'user'),
+(3, 'Phannith', 'password789', '2025-02-19 16:23:09', 'phannith', 'cruz aun', 'michael.smith@example.com', '1112233445', '789 Pine St', 'ImageUser/user_2.png', 'user'),
+(4, 'emilyjones', 'password101', '2025-02-19 16:23:09', 'steve', 'yoan', 'emily.jones@example.com', '2233445566', '101 Maple St', 'ImageUser/user_3.png', 'user'),
+(5, 'danielbrown', 'password202', '2025-02-19 16:23:09', 'Brown', 'Daniel', 'daniel.brown@example.com', '3344556677', '202 Elm St', 'ImageUser/user_2.png', 'user'),
+(6, 'laurawilson', 'password303', '2025-02-19 16:23:09', 'Wilson', 'Laura', 'laura.wilson@example.com', '4455667788', '303 Birch St', 'ImageUser/user_3.png', 'user'),
+(7, 'alexmartin', 'password404', '2025-02-19 16:23:09', 'fafa', 'Alex', 'alex.martin@example.com', '5566778899', '404 Cedar St', 'ImageUser/user.png', 'user'),
+(8, 'sarahlee', 'password505', '2025-02-19 16:23:09', 'Lee', 'Sarah', 'sarah.lee@example.com', '6677889900', '505 Willow St', '', 'user'),
+(9, 'robertdavis', 'password606', '2025-02-19 16:23:09', 'Davis', 'Robert', 'robert.davis@example.com', '7788990011', '606 Pineapple St', '', 'user'),
+(10, 'lindawalker', 'password707', '2025-02-19 16:23:09', 'Walker', 'Linda', 'linda.walker@example.com', '8899001122', '707 Cherry St', 'ImageUser/user_1.png', 'user'),
+(11, 'Phasna', 'Phasna123', '2025-02-20 08:22:51', 'PHASNA', 'AUN', 'phasna@69gmail.com', '0678765324', '69310 PI', 'ImageUser/user_3.png', 'admin');
 
 -- --------------------------------------------------------
 
@@ -119,6 +144,14 @@ INSERT INTO `ventes` (`id`, `product_id`, `quantite_vendue`, `prix_unitaire`, `d
 --
 
 --
+-- Index pour la table `clients`
+--
+ALTER TABLE `clients`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`),
+  ADD UNIQUE KEY `identifiant` (`identifiant`);
+
+--
 -- Index pour la table `Product`
 --
 ALTER TABLE `Product`
@@ -142,10 +175,16 @@ ALTER TABLE `ventes`
 --
 
 --
+-- AUTO_INCREMENT pour la table `clients`
+--
+ALTER TABLE `clients`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT pour la table `Product`
 --
 ALTER TABLE `Product`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT pour la table `user`
@@ -173,3 +212,4 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+

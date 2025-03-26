@@ -1,11 +1,11 @@
-import Graphique from "../../Compenent/Admin/Accueil/Graphique.jsx";
+import WrapperGraphique from "../../Compenent/Admin/Accueil/WrapperGrapphique.jsx";
 
 function App() {
     return (
         <div className="h-screen flex flex-col">
             {/* Accueil */}
             <div className={"overflow-auto"}>
-                <Graphique />
+                <WrapperGraphique />
             </div>
 
         </div>

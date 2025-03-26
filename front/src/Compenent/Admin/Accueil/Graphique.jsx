@@ -23,32 +23,7 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 const StatisticsDashboard = () => {
     return (
-        <div className="p-10 min-h-screen overflow-y-auto">
-            <h1 className="text-5xl font-light text-white mb-10">STATISTIQUE DES VENDS.</h1>
-
-            <div className="grid grid-cols-3 gap-6 mb-10 bg-white bg-opacity-25 p-10 rounded-xl">
-                <div className="p-6 border-2 text-white rounded-2xl shadow-xl text-center flex flex-col items-start">
-                    <DollarSign className="w-10 h-10 mb-4" />
-                    <h2 className="text-2xl font-bold">Chiffre d'affaires</h2>
-                    <p className="text-3xl mt-4 font-bold">25,000€</p>
-                    <p className="text-lg mt-2">Comparé à 23,000€ en juin</p>
-                </div>
-
-                <div className="p-6 border-2 text-white rounded-2xl shadow-xl text-center flex flex-col items-start">
-                    <ShoppingCart className="w-10 h-10 mb-4" />
-                    <h2 className="text-2xl font-bold">Produits vendus</h2>
-                    <p className="text-3xl mt-4 font-bold">1,200</p>
-                    <p className="text-lg mt-2">+10% par rapport au mois dernier</p>
-                </div>
-
-                <div className="p-6 border-2 text-white rounded-2xl shadow-xl text-center flex flex-col items-start">
-                    <Users className="w-10 h-10 mb-4" />
-                    <h2 className="text-2xl font-bold">Utilisateurs inscrits</h2>
-                    <p className="text-3xl mt-4 font-bold">5,300</p>
-                    <p className="text-lg mt-2">Augmentation de 15%</p>
-                </div>
-            </div>
-
+        <div className="p-10 overflow-y-auto">
             {/* Graphiques */}
             <div className={"bg-white bg-opacity-25 p-10 rounded-xl"}>
             <div className="flex gap-10">

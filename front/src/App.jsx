@@ -18,6 +18,7 @@ import Menu_Admin from "./Page/Admin/Interface.jsx"
 // Page connexion
 
 import Connexion from "./Page/Connexion.jsx";
+import CreatAcc from "./Page/creatAcc.jsx";
 
 //Admin
 import Admin from "./Page/Admin/Admin.jsx";
@@ -59,6 +60,7 @@ function App() {
                             </Route>
 
                             <Route path="/Connexion" element={<Connexion/>}/>
+                            <Route path="/Cree_un_compte" element={<CreatAcc/>}/>
                             <Route path="/admin" element={<Admin/>}/>
                         </Routes>
                     </div>

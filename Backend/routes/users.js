@@ -75,6 +75,29 @@ router.put('/:id', async (req, res) => {
 });
 
 
+// 🔹 Supprimer un utilisateur
+router.delete('/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Vérifier si l'utilisateur existe avant de le supprimer
+        const [rows] = await db.promise().query("SELECT * FROM user WHERE id = ?", [id]);
+
+        if (rows.length === 0) {
+            return res.status(404).json({ error: "Utilisateur non trouvé" });
+        }
+
+        // Supprimer l'utilisateur
+        await db.promise().query("DELETE FROM user WHERE id = ?", [id]);
+
+        res.status(200).json({ message: "Utilisateur supprimé avec succès" });
+    } catch (error) {
+        console.error("Erreur lors de la suppression de l'utilisateur:", error);
+        res.status(500).json({ error: "Erreur serveur" });
+    }
+});
+
+
 
 
 export default router;

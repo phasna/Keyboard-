@@ -28,7 +28,7 @@ const RegisterPage = () => {
         setMessage("");
 
         try {
-            const response = await fetch("http://localhost:8000/api/enregistre", {
+            const response = await fetch("http://localhost:8000/api/utilisateurs", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData),

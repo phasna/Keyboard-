@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { FaTruck } from 'react-icons/fa'; // Pour ajouter des icônes
-import { GoogleMap, LoadScript, Autocomplete } from '@react-google-maps/api';
+import { LoadScript, Autocomplete } from '@react-google-maps/api';
 
 const DeliveryPage = ({ goToNextStep }) => {
     const [selectedOption, setSelectedOption] = useState('');
@@ -8,7 +8,6 @@ const DeliveryPage = ({ goToNextStep }) => {
     const [city, setCity] = useState('');
     const [postalCode, setPostalCode] = useState('');
     const [country, setCountry] = useState('');
-    const [suggestions, setSuggestions] = useState([]);
 
     // Gestion des changements dans l'input d'adresse
     const handleAddressChange = (event) => {

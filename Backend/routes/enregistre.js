@@ -24,7 +24,7 @@ router.post('/', async (req, res) => {
 
         // Insertion du client dans la base de données avec le mot de passe en clair
         const [result] = await db.promise().query(
-            'INSERT INTO clients (nom, prenom, email, telephone, adresse, identifiant, mot_de_passe, date_inscription) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())',
+            'INSERT INTO user (nom, prenom, email, telephone, adresse, identifiant, mot_de_passe, date_inscription) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())',
             [nom, prenom, email, telephone, adresse, identifiant, mot_de_passe]
         );
 

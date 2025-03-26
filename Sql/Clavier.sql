@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:8889
--- Généré le : mar. 25 mars 2025 à 14:54
+-- Généré le : mer. 26 mars 2025 à 08:53
 -- Version du serveur : 8.0.35
 -- Version de PHP : 8.2.20
 
@@ -82,6 +82,18 @@ INSERT INTO `Product` (`id`, `image`, `title`, `price`, `rating`, `stock`) VALUE
 -- --------------------------------------------------------
 
 --
+-- Doublure de structure pour la vue `statistiques_ventes`
+-- (Voir ci-dessous la vue réelle)
+--
+CREATE TABLE `statistiques_ventes` (
+`chiffre_affaires_total` decimal(32,2)
+,`nombre_produits_vendus` decimal(32,0)
+,`nombre_utilisateurs` bigint
+);
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `user`
 --
 
@@ -114,7 +126,8 @@ INSERT INTO `user` (`id`, `identifiant`, `mot_de_passe`, `date_creation`, `nom`,
 (8, 'sarahlee', 'password505', '2025-02-19 16:23:09', 'Lee', 'Sarah', 'sarah.lee@example.com', '6677889900', '505 Willow St', '', 'user'),
 (9, 'robertdavis', 'password606', '2025-02-19 16:23:09', 'Davis', 'Robert', 'robert.davis@example.com', '7788990011', '606 Pineapple St', '', 'user'),
 (10, 'lindawalker', 'password707', '2025-02-19 16:23:09', 'Walker', 'Linda', 'linda.walker@example.com', '8899001122', '707 Cherry St', 'ImageUser/user_1.png', 'user'),
-(11, 'Phasna', 'Phasna123', '2025-02-20 08:22:51', 'PHASNA', 'AUN', 'phasna@69gmail.com', '0678765324', '69310 PI', 'ImageUser/user_3.png', 'admin');
+(11, 'Phasna', 'Phasna123', '2025-02-20 08:22:51', 'PHASNA', 'AUN', 'phasna@69gmail.com', '0678765324', '69310 PI', 'ImageUser/user_3.png', 'admin'),
+(14, 'Tifa', '$2b$10$9tbkP9bcosKDZKPHrT1WqeIQ9.XEUtAnCBugudCCqBGznuj5/zk.W', '2025-03-26 08:45:04', 'TIfa', 'Nana', 'Tifa@gmail.com', '0652345678', '15 Rue de Flesselles', 'Clavier/mecanique.png', 'user');
 
 -- --------------------------------------------------------
 
@@ -138,6 +151,15 @@ CREATE TABLE `ventes` (
 INSERT INTO `ventes` (`id`, `product_id`, `quantite_vendue`, `prix_unitaire`, `date_vente`) VALUES
 (1, 3, 3, 85.00, '2025-02-18 15:46:10'),
 (2, 3, 2, 85.00, '2025-02-18 15:46:39');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la vue `statistiques_ventes`
+--
+DROP TABLE IF EXISTS `statistiques_ventes`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `statistiques_ventes`  AS SELECT (select coalesce(sum(`ventes`.`prix_total`),0) from `ventes`) AS `chiffre_affaires_total`, (select coalesce(sum(`ventes`.`quantite_vendue`),0) from `ventes`) AS `nombre_produits_vendus`, (select count(0) from `user`) AS `nombre_utilisateurs` ;
 
 --
 -- Index pour les tables déchargées
@@ -190,7 +212,7 @@ ALTER TABLE `Product`
 -- AUTO_INCREMENT pour la table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT pour la table `ventes`

@@ -34,50 +34,91 @@ router.post('/', (req, res) => {
         return res.status(400).json({ message: 'Tous les champs sont requis.' });
     }
 
-    // Insérer le client
-    const query = `
-        INSERT INTO Clients (nom, prenom, email, telephone, adresse, mode_livraison, pays, ville, code_postal, 
-                             cardNumber, nameCard, expirationDate, cvv, paymentMethod)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
-
-    db.query(query, [
-        nom, prenom, email, telephone, adresse, mode_livraison, pays, ville, code_postal,
-        cardNumber, nameCard, expirationDate, cvv, paymentMethod
-    ], (err, results) => {
+    // Vérifier si le client existe déjà dans la base de données par email
+    const checkEmailQuery = 'SELECT * FROM Clients WHERE email = ?';
+    db.query(checkEmailQuery, [email], (err, results) => {
         if (err) {
-            console.error('Erreur lors de l\'ajout du client:', err);
-            return res.status(500).json({ error: 'Erreur lors de l\'ajout du client' });
+            console.error('Erreur lors de la vérification de l\'email:', err);
+            return res.status(500).json({ error: 'Erreur lors de la vérification de l\'email' });
         }
 
-        const clientId = results.insertId; // ID du client inséré
-        const cartQuery = `
-            INSERT INTO Cart (clientId, productId, quantity, price)
-            VALUES ?
-        `;
+        if (results.length > 0) {
+            // Si le client existe déjà, on récupère son ID
+            const clientId = results[0].id;
 
-        // Vérification du contenu de cart
-        const cartData = cart.map(item => {
-            console.log(item);  // Vérification
-            return [
-                clientId,
-                item.id,  // ID du produit sélectionné
-                item.quantity,
-                item.price
-            ];
-        });
+            // Ajout des produits dans le panier pour ce client
+            const cartQuery = `
+                INSERT INTO Cart (clientId, productId, quantity, price)
+                VALUES ?
+            `;
 
-        // Si des produits ont bien été ajoutés
-        if (cartData.length > 0) {
-            db.query(cartQuery, [cartData], (err) => {
-                if (err) {
-                    console.error('Erreur lors de l\'ajout du panier:', err);
-                    return res.status(500).json({ error: 'Erreur lors de l\'ajout du panier' });
-                }
-                res.status(201).json({ message: 'Client et panier ajoutés avec succès' });
+            // Vérification du contenu du panier
+            const cartData = cart.map(item => {
+                return [
+                    clientId,
+                    item.id,  // ID du produit sélectionné
+                    item.quantity,
+                    item.price
+                ];
             });
+
+            // Si des produits ont bien été ajoutés
+            if (cartData.length > 0) {
+                db.query(cartQuery, [cartData], (err) => {
+                    if (err) {
+                        console.error('Erreur lors de l\'ajout du panier:', err);
+                        return res.status(500).json({ error: 'Erreur lors de l\'ajout du panier' });
+                    }
+                    res.status(201).json({ message: 'Produits ajoutés avec succès au panier du client existant.' });
+                });
+            } else {
+                return res.status(400).json({ message: 'Panier vide ou invalide' });
+            }
         } else {
-            return res.status(400).json({ message: 'Panier vide ou invalide' });
+            // Si le client n'existe pas, on l'ajoute dans la table Clients
+            const insertClientQuery = `
+                INSERT INTO Clients (nom, prenom, email, telephone, adresse, mode_livraison, pays, ville, code_postal, 
+                                     cardNumber, nameCard, expirationDate, cvv, paymentMethod)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `;
+
+            db.query(insertClientQuery, [
+                nom, prenom, email, telephone, adresse, mode_livraison, pays, ville, code_postal,
+                cardNumber, nameCard, expirationDate, cvv, paymentMethod
+            ], (err, results) => {
+                if (err) {
+                    console.error('Erreur lors de l\'ajout du client:', err);
+                    return res.status(500).json({ error: 'Erreur lors de l\'ajout du client' });
+                }
+
+                const clientId = results.insertId; // ID du client inséré
+                const cartQuery = `
+                    INSERT INTO Cart (clientId, productId, quantity, price)
+                    VALUES ?
+                `;
+
+                const cartData = cart.map(item => {
+                    return [
+                        clientId,
+                        item.id,  // ID du produit sélectionné
+                        item.quantity,
+                        item.price
+                    ];
+                });
+
+                // Si des produits ont bien été ajoutés
+                if (cartData.length > 0) {
+                    db.query(cartQuery, [cartData], (err) => {
+                        if (err) {
+                            console.error('Erreur lors de l\'ajout du panier:', err);
+                            return res.status(500).json({ error: 'Erreur lors de l\'ajout du panier' });
+                        }
+                        res.status(201).json({ message: 'Client et panier ajoutés avec succès' });
+                    });
+                } else {
+                    return res.status(400).json({ message: 'Panier vide ou invalide' });
+                }
+            });
         }
     });
 });

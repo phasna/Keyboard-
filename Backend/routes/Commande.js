@@ -46,34 +46,52 @@ router.post('/', (req, res) => {
             // Si le client existe déjà, on récupère son ID
             const clientId = results[0].id;
 
-            // Ajout des produits dans le panier pour ce client
-            const cartQuery = `
-                INSERT INTO Cart (clientId, productId, quantity, price)
-                VALUES ?
-            `;
+            // Vérification des produits dans le panier
+            const checkProductsExist = `SELECT id FROM Product WHERE id IN (?)`;
+            const productIds = cart.map(item => item.id);
 
-            // Vérification du contenu du panier
-            const cartData = cart.map(item => {
-                return [
-                    clientId,
-                    item.id,  // ID du produit sélectionné
-                    item.quantity,
-                    item.price
-                ];
-            });
+            db.query(checkProductsExist, [productIds], (err, results) => {
+                if (err) {
+                    console.error('Erreur lors de la vérification des produits:', err);
+                    return res.status(500).json({ error: 'Erreur de vérification des produits' });
+                }
 
-            // Si des produits ont bien été ajoutés
-            if (cartData.length > 0) {
-                db.query(cartQuery, [cartData], (err) => {
-                    if (err) {
-                        console.error('Erreur lors de l\'ajout du panier:', err);
-                        return res.status(500).json({ error: 'Erreur lors de l\'ajout du panier' });
-                    }
-                    res.status(201).json({ message: 'Produits ajoutés avec succès au panier du client existant.' });
+                const existingProductIds = results.map(result => result.id);
+                const invalidProducts = cart.filter(item => !existingProductIds.includes(item.id));
+
+                if (invalidProducts.length > 0) {
+                    return res.status(400).json({ message: 'Certains produits n\'existent pas.' });
+                }
+
+                // Ajout des produits dans le panier pour ce client
+                const cartQuery = `
+                    INSERT INTO Cart (clientId, productId, quantity, price)
+                    VALUES ?
+                `;
+
+                // Vérification du contenu du panier
+                const cartData = cart.map(item => {
+                    return [
+                        clientId,
+                        item.id,  // ID du produit sélectionné
+                        item.quantity,
+                        item.price
+                    ];
                 });
-            } else {
-                return res.status(400).json({ message: 'Panier vide ou invalide' });
-            }
+
+                // Si des produits ont bien été ajoutés
+                if (cartData.length > 0) {
+                    db.query(cartQuery, [cartData], (err) => {
+                        if (err) {
+                            console.error('Erreur lors de l\'ajout du panier:', err);
+                            return res.status(500).json({ error: 'Erreur lors de l\'ajout du panier' });
+                        }
+                        res.status(201).json({ message: 'Produits ajoutés avec succès au panier du client existant.' });
+                    });
+                } else {
+                    return res.status(400).json({ message: 'Panier vide ou invalide' });
+                }
+            });
         } else {
             // Si le client n'existe pas, on l'ajoute dans la table Clients
             const insertClientQuery = `
@@ -92,37 +110,54 @@ router.post('/', (req, res) => {
                 }
 
                 const clientId = results.insertId; // ID du client inséré
-                const cartQuery = `
-                    INSERT INTO Cart (clientId, productId, quantity, price)
-                    VALUES ?
-                `;
 
-                const cartData = cart.map(item => {
-                    return [
+                // Vérification des produits dans le panier
+                const checkProductsExist = `SELECT id FROM Product WHERE id IN (?)`;
+                const productIds = cart.map(item => item.id);
+
+                db.query(checkProductsExist, [productIds], (err, results) => {
+                    if (err) {
+                        console.error('Erreur lors de la vérification des produits:', err);
+                        return res.status(500).json({ error: 'Erreur de vérification des produits' });
+                    }
+
+                    const existingProductIds = results.map(result => result.id);
+                    const invalidProducts = cart.filter(item => !existingProductIds.includes(item.id));
+
+                    if (invalidProducts.length > 0) {
+                        return res.status(400).json({ message: 'Certains produits n\'existent pas.' });
+                    }
+
+                    // Ajout des produits dans le panier
+                    const cartQuery = `
+                        INSERT INTO Cart (clientId, productId, quantity, price)
+                        VALUES ?
+                    `;
+
+                    const cartData = cart.map(item => [
                         clientId,
-                        item.id,  // ID du produit sélectionné
+                        item.id,
                         item.quantity,
                         item.price
-                    ];
-                });
+                    ]);
 
-                // Si des produits ont bien été ajoutés
-                if (cartData.length > 0) {
-                    db.query(cartQuery, [cartData], (err) => {
-                        if (err) {
-                            console.error('Erreur lors de l\'ajout du panier:', err);
-                            return res.status(500).json({ error: 'Erreur lors de l\'ajout du panier' });
-                        }
-                        res.status(201).json({ message: 'Client et panier ajoutés avec succès' });
-                    });
-                } else {
-                    return res.status(400).json({ message: 'Panier vide ou invalide' });
-                }
+                    // Si des produits ont bien été ajoutés
+                    if (cartData.length > 0) {
+                        db.query(cartQuery, [cartData], (err) => {
+                            if (err) {
+                                console.error('Erreur lors de l\'ajout du panier:', err);
+                                return res.status(500).json({ error: 'Erreur lors de l\'ajout du panier' });
+                            }
+                            res.status(201).json({ message: 'Client et panier ajoutés avec succès' });
+                        });
+                    } else {
+                        return res.status(400).json({ message: 'Panier vide ou invalide' });
+                    }
+                });
             });
         }
     });
 });
-
 
 // Modifier un client
 router.put('/:id', (req, res) => {

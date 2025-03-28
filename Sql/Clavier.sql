@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Hôte : localhost:8889
--- Généré le : mer. 26 mars 2025 à 08:53
--- Version du serveur : 8.0.35
--- Version de PHP : 8.2.20
+-- Host: localhost:8889
+-- Generation Time: Mar 28, 2025 at 01:20 PM
+-- Server version: 8.0.35
+-- PHP Version: 8.2.20
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,54 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `Clavier`
+-- Database: `Clavier`
 --
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `clients`
+-- Table structure for table `Cart`
+--
+
+CREATE TABLE `Cart` (
+  `id` int NOT NULL,
+  `clientId` int NOT NULL,
+  `productId` int NOT NULL,
+  `quantity` int NOT NULL,
+  `price` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `Cart`
+--
+
+INSERT INTO `Cart` (`id`, `clientId`, `productId`, `quantity`, `price`) VALUES
+(44, 26, 2, 1, 90.00),
+(45, 26, 6, 1, 75.00),
+(46, 26, 7, 1, 99.00);
+
+--
+-- Triggers `Cart`
+--
+DELIMITER $$
+CREATE TRIGGER `update_id_produit_on_insert` AFTER INSERT ON `Cart` FOR EACH ROW BEGIN
+    DECLARE nb_produits INT;
+    
+    -- Compter le nombre total de produits du client
+    SELECT COUNT(*) INTO nb_produits FROM cart WHERE clientId = NEW.clientId;
+    
+    -- Mettre à jour la table clients
+    UPDATE clients 
+    SET id_produit = nb_produits
+    WHERE id = NEW.clientId;
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `clients`
 --
 
 CREATE TABLE `clients` (
@@ -35,22 +76,54 @@ CREATE TABLE `clients` (
   `telephone` varchar(20) DEFAULT NULL,
   `adresse` text,
   `identifiant` varchar(255) NOT NULL,
-  `mot_de_passe` varchar(255) NOT NULL,
-  `date_inscription` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+  `date_inscription` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `mode_livraison` varchar(50) DEFAULT NULL,
+  `pays` varchar(50) DEFAULT NULL,
+  `ville` varchar(50) DEFAULT NULL,
+  `code_postal` varchar(10) DEFAULT NULL,
+  `cardNumber` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `nameCard` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `expirationDate` varchar(15) DEFAULT NULL,
+  `cvv` varchar(4) DEFAULT NULL,
+  `paymentMethod` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `id_produit` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Déchargement des données de la table `clients`
+-- Dumping data for table `clients`
 --
 
-INSERT INTO `clients` (`id`, `nom`, `prenom`, `email`, `telephone`, `adresse`, `identifiant`, `mot_de_passe`, `date_inscription`) VALUES
-(1, 'chhung', 'Cruz-Aun', 'phasna.aun@afip-formations.com', '0652473681', '1 allée des peuplier', 'Chhung ', 'Davith', '2025-03-25 14:51:58'),
-(2, 'Lola', 'Cruz-Aun', 'Lola@gmail.com', '0652473681', '1 allée des peuplier', 'TITI', 'TITI123', '2025-03-25 14:53:33');
+INSERT INTO `clients` (`id`, `nom`, `prenom`, `email`, `telephone`, `adresse`, `identifiant`, `date_inscription`, `mode_livraison`, `pays`, `ville`, `code_postal`, `cardNumber`, `nameCard`, `expirationDate`, `cvv`, `paymentMethod`, `id_produit`) VALUES
+(26, 'Cruz-Aun', 'phasna', 'phasna.aun@afip-formations.com', '0652473681', '1 allée des peuplier', 'phasna.aun@afip-formations.com', '2025-03-28 13:19:51', 'standard', 'fr', 'Pierre bénite', '69320', '065646646447', 'aun', '11/12', '128', 'Visa', 3);
+
+--
+-- Triggers `clients`
+--
+DELIMITER $$
+CREATE TRIGGER `before_insert_clients` BEFORE INSERT ON `clients` FOR EACH ROW BEGIN
+    SET NEW.identifiant = NEW.email;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Product`
+-- Table structure for table `commandes`
+--
+
+CREATE TABLE `commandes` (
+  `id` int NOT NULL,
+  `id_client` int NOT NULL,
+  `date_commande` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `total` decimal(10,2) DEFAULT NULL,
+  `statut` varchar(50) DEFAULT 'En cours'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Product`
 --
 
 CREATE TABLE `Product` (
@@ -63,7 +136,7 @@ CREATE TABLE `Product` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Déchargement des données de la table `Product`
+-- Dumping data for table `Product`
 --
 
 INSERT INTO `Product` (`id`, `image`, `title`, `price`, `rating`, `stock`) VALUES
@@ -82,8 +155,8 @@ INSERT INTO `Product` (`id`, `image`, `title`, `price`, `rating`, `stock`) VALUE
 -- --------------------------------------------------------
 
 --
--- Doublure de structure pour la vue `statistiques_ventes`
--- (Voir ci-dessous la vue réelle)
+-- Stand-in structure for view `statistiques_ventes`
+-- (See below for the actual view)
 --
 CREATE TABLE `statistiques_ventes` (
 `chiffre_affaires_total` decimal(32,2)
@@ -94,7 +167,7 @@ CREATE TABLE `statistiques_ventes` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `user`
+-- Table structure for table `user`
 --
 
 CREATE TABLE `user` (
@@ -112,7 +185,7 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Déchargement des données de la table `user`
+-- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`id`, `identifiant`, `mot_de_passe`, `date_creation`, `nom`, `prenom`, `email`, `telephone`, `adresse`, `image`, `role`) VALUES
@@ -127,16 +200,17 @@ INSERT INTO `user` (`id`, `identifiant`, `mot_de_passe`, `date_creation`, `nom`,
 (9, 'robertdavis', 'password606', '2025-02-19 16:23:09', 'Davis', 'Robert', 'robert.davis@example.com', '7788990011', '606 Pineapple St', '', 'user'),
 (10, 'lindawalker', 'password707', '2025-02-19 16:23:09', 'Walker', 'Linda', 'linda.walker@example.com', '8899001122', '707 Cherry St', 'ImageUser/user_1.png', 'user'),
 (11, 'Phasna', 'Phasna123', '2025-02-20 08:22:51', 'PHASNA', 'AUN', 'phasna@69gmail.com', '0678765324', '69310 PI', 'ImageUser/user_3.png', 'admin'),
-(14, 'Tifa', '$2b$10$9tbkP9bcosKDZKPHrT1WqeIQ9.XEUtAnCBugudCCqBGznuj5/zk.W', '2025-03-26 08:45:04', 'TIfa', 'Nana', 'Tifa@gmail.com', '0652345678', '15 Rue de Flesselles', 'Clavier/mecanique.png', 'user');
+(15, 'Sara', '$2b$10$at5o2alDZapSUdIvq8UzOeQel0gF1dwFiYp7EHlM8DedqczjxWt2m', '2025-03-26 10:00:43', 'Sara', 'Nana', 'Sara@gmail.com', '0652345678', '15 Rue de Flesselles', NULL, 'user');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `ventes`
+-- Table structure for table `ventes`
 --
 
 CREATE TABLE `ventes` (
   `id` int NOT NULL,
+  `id_user` int NOT NULL,
   `product_id` int NOT NULL,
   `quantite_vendue` int NOT NULL,
   `prix_unitaire` decimal(10,2) NOT NULL,
@@ -145,89 +219,142 @@ CREATE TABLE `ventes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Déchargement des données de la table `ventes`
+-- Dumping data for table `ventes`
 --
 
-INSERT INTO `ventes` (`id`, `product_id`, `quantite_vendue`, `prix_unitaire`, `date_vente`) VALUES
-(1, 3, 3, 85.00, '2025-02-18 15:46:10'),
-(2, 3, 2, 85.00, '2025-02-18 15:46:39');
+INSERT INTO `ventes` (`id`, `id_user`, `product_id`, `quantite_vendue`, `prix_unitaire`, `date_vente`) VALUES
+(1, 1, 3, 3, 85.00, '2025-02-18 15:46:10'),
+(2, 2, 3, 2, 85.00, '2025-02-18 15:46:39'),
+(7, 1, 1, 2, 50.00, '2024-03-26 00:00:00'),
+(8, 2, 2, 1, 5000.00, '2024-03-25 00:00:00'),
+(9, 3, 3, 3, 3000.00, '2024-03-24 00:00:00'),
+(10, 1, 4, 1, 75.00, '2024-03-23 00:00:00');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la vue `statistiques_ventes`
+-- Structure for view `statistiques_ventes`
 --
 DROP TABLE IF EXISTS `statistiques_ventes`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `statistiques_ventes`  AS SELECT (select coalesce(sum(`ventes`.`prix_total`),0) from `ventes`) AS `chiffre_affaires_total`, (select coalesce(sum(`ventes`.`quantite_vendue`),0) from `ventes`) AS `nombre_produits_vendus`, (select count(0) from `user`) AS `nombre_utilisateurs` ;
 
 --
--- Index pour les tables déchargées
+-- Indexes for dumped tables
 --
 
 --
--- Index pour la table `clients`
+-- Indexes for table `Cart`
+--
+ALTER TABLE `Cart`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `cart_ibfk_1` (`clientId`),
+  ADD KEY `cart_ibfk_2` (`productId`);
+
+--
+-- Indexes for table `clients`
 --
 ALTER TABLE `clients`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`),
-  ADD UNIQUE KEY `identifiant` (`identifiant`);
+  ADD UNIQUE KEY `identifiant` (`identifiant`),
+  ADD KEY `fk_clients_produit` (`id_produit`);
 
 --
--- Index pour la table `Product`
+-- Indexes for table `commandes`
+--
+ALTER TABLE `commandes`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_client` (`id_client`);
+
+--
+-- Indexes for table `Product`
 --
 ALTER TABLE `Product`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `user`
+-- Indexes for table `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `ventes`
+-- Indexes for table `ventes`
 --
 ALTER TABLE `ventes`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `product_id` (`product_id`);
+  ADD KEY `product_id` (`product_id`),
+  ADD KEY `fk_ventes_user` (`id_user`);
 
 --
--- AUTO_INCREMENT pour les tables déchargées
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT pour la table `clients`
+-- AUTO_INCREMENT for table `Cart`
+--
+ALTER TABLE `Cart`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+
+--
+-- AUTO_INCREMENT for table `clients`
 --
 ALTER TABLE `clients`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
--- AUTO_INCREMENT pour la table `Product`
+-- AUTO_INCREMENT for table `commandes`
+--
+ALTER TABLE `commandes`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `Product`
 --
 ALTER TABLE `Product`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
--- AUTO_INCREMENT pour la table `user`
+-- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
--- AUTO_INCREMENT pour la table `ventes`
+-- AUTO_INCREMENT for table `ventes`
 --
 ALTER TABLE `ventes`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- Contraintes pour les tables déchargées
+-- Constraints for dumped tables
 --
 
 --
--- Contraintes pour la table `ventes`
+-- Constraints for table `Cart`
+--
+ALTER TABLE `Cart`
+  ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`clientId`) REFERENCES `clients` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`productId`) REFERENCES `Product` (`id`);
+
+--
+-- Constraints for table `clients`
+--
+ALTER TABLE `clients`
+  ADD CONSTRAINT `fk_clients_produit` FOREIGN KEY (`id_produit`) REFERENCES `Product` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_id_produit` FOREIGN KEY (`id_produit`) REFERENCES `Product` (`id`) ON DELETE SET NULL;
+
+--
+-- Constraints for table `commandes`
+--
+ALTER TABLE `commandes`
+  ADD CONSTRAINT `commandes_ibfk_1` FOREIGN KEY (`id_client`) REFERENCES `clients` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `ventes`
 --
 ALTER TABLE `ventes`
+  ADD CONSTRAINT `fk_ventes_user` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `ventes_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE;
 COMMIT;
 

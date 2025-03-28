@@ -7,6 +7,8 @@ import ventesRoutes from './routes/ventes.js';
 import loginRoutes from './routes/login.js';
 import enregistreRoutes from './routes/enregistre.js';
 import statistiqueRoutes from './routes/statistique_ventes.js';
+import commandeRoutes from './routes/Commande.js';
+
 
 const app = express();
 
@@ -29,6 +31,7 @@ app.use('/api/ventes', ventesRoutes);
 app.use('/api/login', loginRoutes);
 app.use('/api/enregistre', enregistreRoutes);
 app.use('/api/statistiques_ventes', statistiqueRoutes);
+app.use('/api/commande', commandeRoutes);
 
 // Démarrer le serveur
 const PORT = 8000;

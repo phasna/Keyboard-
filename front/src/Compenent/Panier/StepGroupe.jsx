@@ -6,7 +6,7 @@ import Summary from "./Summary.jsx";
 
 const Checkout = () => {
     const [step, setStep] = useState(1);
-    const [cartData, setCartData] = useState({});
+    const [cartData, setCartData] = useState([]);
     const [deliveryData, setDeliveryData] = useState({});
     const [paymentData, setPaymentData] = useState({});
     const [loading, setLoading] = useState(false);

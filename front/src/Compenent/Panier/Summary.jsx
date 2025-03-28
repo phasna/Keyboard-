@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const Summary = ({ cartData = [], deliveryData = {}, paymentData = {} }) => {
     // Calcul du prix total
@@ -8,6 +8,7 @@ const Summary = ({ cartData = [], deliveryData = {}, paymentData = {} }) => {
         if (cartData.length === 0) {
             return <p className="text-sm text-gray-400">Aucun article dans le panier</p>;
         }
+        console.log(cartData); // Debug
         return (
             <ul className="text-lg font-light text-gray-200 space-y-2">
                 {cartData.map((item, index) => (
@@ -20,30 +21,35 @@ const Summary = ({ cartData = [], deliveryData = {}, paymentData = {} }) => {
     };
 
     const renderDeliveryInfo = () => {
-        if (!deliveryData.address) {
+        if (!deliveryData.adresse) {
             return <p className="text-sm text-gray-400">Aucune information de livraison</p>;
         }
+
+        // Adaptation des clés pour correspondre à `deliveryData`
+        console.log(deliveryData); // Debug
         return (
             <div className="text-lg font-light text-gray-200">
-                <p><span className="font-semibold">Nom :</span> {deliveryData.firstName}</p>
-                <p><span className="font-semibold">prénom :</span> {deliveryData.lastName}</p>
-                <p><span className="font-semibold">Téléphone :</span> {deliveryData.phone}</p>
+                <p><span className="font-semibold">Nom :</span> {deliveryData.nom}</p>
+                <p><span className="font-semibold">Prénom :</span> {deliveryData.prenom}</p>
+                <p><span className="font-semibold">Téléphone :</span> {deliveryData.telephone}</p>
                 <p><span className="font-semibold">Email :</span> {deliveryData.email}</p>
-                <p><span className="font-semibold">Adresse :</span> {deliveryData.address}</p>
-                <p><span className="font-semibold">Ville :</span> {deliveryData.city}</p>
-                <p><span className="font-semibold">Code postal :</span> {deliveryData.postalCode}</p>
-                <p><span className="font-semibold">Pays :</span> {deliveryData.country}</p>
+                <p><span className="font-semibold">Adresse :</span> {deliveryData.adresse}</p>
+                <p><span className="font-semibold">Ville :</span> {deliveryData.ville}</p>
+                <p><span className="font-semibold">Code postal :</span> {deliveryData.code_postal}</p>
+                <p><span className="font-semibold">Pays :</span> {deliveryData.pays}</p>
+                <p><span className="font-semibold">Mode de livraison :</span> {deliveryData.mode_livraison}</p>
             </div>
         );
     };
 
     const renderPaymentInfo = () => {
-        if (!paymentData.name) {
+        if (!paymentData.nameCard) {
             return <p className="text-lg font-light text-gray-400">Aucune information de paiement</p>;
         }
+        console.log(paymentData); // Debug
         return (
             <div className="text-lg font-light text-gray-200">
-                <p><span className="font-semibold">Nom sur la carte :</span> {paymentData.name}</p>
+                <p><span className="font-semibold">Nom sur la carte :</span> {paymentData.nameCard}</p>
                 <p><span className="font-semibold">Méthode :</span> {paymentData.paymentMethod}</p>
             </div>
         );

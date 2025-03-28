@@ -32,7 +32,12 @@ const CartPage = ({ goToNextStep }) => {
 
     useEffect(() => {
         const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
-        setCartItems(storedCart);
+        if (Array.isArray(storedCart)) {
+            setCartItems(storedCart);
+        } else {
+            localStorage.setItem('cart', JSON.stringify([])); // Si corrompu, réinitialiser.
+            setCartItems([]);
+        }
     }, []);
 
     useEffect(() => {
@@ -49,7 +54,7 @@ const CartPage = ({ goToNextStep }) => {
         const updatedCart = cartItems.map(item => {
             if (item.id === itemToUpdate.id) {
                 const updatedItem = { ...item, quantity: item.quantity + change };
-                return updatedItem.quantity > 0 ? updatedItem : null;
+                return updatedItem.quantity > 0 ? updatedItem : null; // Ne pas autoriser quantité <= 0
             }
             return item;
         }).filter(item => item !== null);

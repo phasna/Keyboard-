@@ -4,7 +4,7 @@ import { FaPaypal, FaCcVisa, FaCcMastercard, FaApplePay } from 'react-icons/fa';
 
 const PaymentPage = ({ goToNextStep }) => {
     const [formData, setFormData] = useState({
-        name: '',
+        nameCard: '',
         cardNumber: '',
         expirationDate: '',
         cvv: '',
@@ -53,8 +53,8 @@ const PaymentPage = ({ goToNextStep }) => {
                         <label className="block text-sm font-semibold text-gray-300">Nom</label>
                         <input
                             type="text"
-                            name="name"
-                            value={formData.name}
+                            name="nameCard"
+                            value={formData.nameCard}
                             onChange={handleChange}
                             className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg"
                             placeholder="Entrez votre nom"

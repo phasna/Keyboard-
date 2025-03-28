@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import axios from "axios";
-import { motion } from 'framer-motion'; // Importez Framer Motion
+import { motion } from 'framer-motion';
+import Swal from 'sweetalert2';
 
 const ProductCard = ({ product, onAddToCart }) => {
     const renderStars = (rating) => {
@@ -23,9 +24,9 @@ const ProductCard = ({ product, onAddToCart }) => {
     return (
         <motion.div
             className="bg-zinc-500 bg-opacity-60 shadow-md rounded-lg overflow-hidden transform transition-transform hover:scale-105 hover:shadow-lg p-10"
-            initial={{ opacity: 0 }} // L'élément commence avec une opacité de 0
-            animate={{ opacity: 1 }} // L'élément devient complètement opaque
-            transition={{ duration: 0.5 }} // Animation pendant 0.5 seconde
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
         >
             <img src={product.image} alt={product.title} className="w-full h-40 object-cover" />
             <div className="p-4">
@@ -45,9 +46,10 @@ const ProductCard = ({ product, onAddToCart }) => {
 
 const ProductGrid = () => {
     const [products, setProducts] = useState([]);
-    const [showModal, setShowModal] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
     const [sortOption, setSortOption] = useState("other");
+    const [currentPage, setCurrentPage] = useState(1);
+    const productsPerPage = 8;
 
     useEffect(() => {
         const getProducts = async () => {
@@ -71,10 +73,18 @@ const ProductGrid = () => {
             cart.push(product);
         }
         localStorage.setItem('cart', JSON.stringify(cart));
-        setShowModal(true);
-        setTimeout(() => {
-            setShowModal(false);
-        }, 500);
+
+        // Afficher l'alerte SweetAlert2
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: `${product.title} a été ajouté au panier`,
+            showConfirmButton: false,
+            timer: 2000, // Affichage pendant 2 secondes
+            toast: true,
+            background: '#1a1a1a',
+            color: '#fff'
+        });
     };
 
     const filteredProducts = products
@@ -86,18 +96,20 @@ const ProductGrid = () => {
                 return a.price - b.price;
             } else if (sortOption === "descending") {
                 return b.price - a.price;
-            } else if (sortOption === "other") {
-                return a.someOtherProperty - b.someOtherProperty;
             } else {
                 return 0;
             }
         });
 
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+    const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+
     return (
         <div className="px-10 py-10 container mx-auto">
             <h1 className="text-7xl font-bold text-center text-green-400 mb-10 bg-gradient-to-r from-white via-gray-400 to-gray-600 text-transparent bg-clip-text">Nos produits</h1>
 
-            {/* Barre de recherche et options alignées */}
             <div className="flex justify-between items-center mb-10">
                 <input
                     type="text"
@@ -106,65 +118,52 @@ const ProductGrid = () => {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <div className="flex gap-4">
-                    {/* Sélecteur de tri */}
-                    <div>
-                        <select
-                            value={sortOption}
-                            onChange={(e) => setSortOption(e.target.value)}
-                            className="p-4 border border-gray-300 rounded-lg bg-black text-white"
-                        >
-                            <option value="other">Trier votre prix</option>
-                            <option value="ascending">Prix Croissant</option>
-                            <option value="descending">Prix Décroissant</option>
-                        </select>
-                    </div>
-                </div>
+                <select
+                    value={sortOption}
+                    onChange={(e) => setSortOption(e.target.value)}
+                    className="p-4 border border-gray-300 rounded-lg bg-black text-white"
+                >
+                    <option value="other">Trier votre prix</option>
+                    <option value="ascending">Prix Croissant</option>
+                    <option value="descending">Prix Décroissant</option>
+                </select>
             </div>
 
-            {/* Animation de l'affichage des produits un par un avec un décalage basé sur l'index */}
-            <motion.div
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
-                initial="hidden"
-                animate="show"
-                variants={{
-                    hidden: { opacity: 0 },
-                    show: { opacity: 1, transition: { staggerChildren: 0.6 } } // Le délai entre chaque produit est basé sur l'index multiplié par 0.6
-                }}
-            >
-                {filteredProducts.length > 0 ? (
-                    filteredProducts.map((product, index) => (
-                        <motion.div
-                            key={product.id}
-                            variants={{
-                                hidden: { opacity: 0 },
-                                show: { opacity: 1, transition: { duration: 0.5, delay: index * 0.2 } } // Calcul du délai en fonction de l'index
-                            }}
-                        >
-                            <ProductCard product={product} onAddToCart={handleAddToCart} />
-                        </motion.div>
+            <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                {currentProducts.length > 0 ? (
+                    currentProducts.map(product => (
+                        <ProductCard key={product.id} product={product} onAddToCart={handleAddToCart} />
                     ))
                 ) : (
                     <p className="text-white text-center">Aucun produit disponible</p>
                 )}
             </motion.div>
 
-            {showModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                    <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
-                        <h2 className="text-2xl font-semibold text-green-600 mb-4">Produit ajouté au panier !</h2>
-                        <p className="text-gray-700 mb-4">Votre produit a été ajouté avec succès.</p>
-                        <div className="flex justify-center">
-                            <button
-                                onClick={() => setShowModal(false)}
-                                className="py-2 px-6 bg-green-600 text-white rounded-md hover:bg-green-800 transition duration-300"
-                            >
-                                Fermer
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
+            <div className="flex justify-center mt-8 space-x-4">
+                <button
+                    className="px-4 py-2 bg-gray-700 text-white rounded-lg"
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage(currentPage - 1)}
+                >
+                    Précédent
+                </button>
+                {Array.from({ length: totalPages }, (_, i) => (
+                    <button
+                        key={i}
+                        className={`px-4 py-2 rounded-lg ${currentPage === i + 1 ? 'bg-green-500 text-white' : 'bg-gray-700 text-gray-200'}`}
+                        onClick={() => setCurrentPage(i + 1)}
+                    >
+                        {i + 1}
+                    </button>
+                ))}
+                <button
+                    className="px-4 py-2 bg-gray-700 text-white rounded-lg"
+                    disabled={currentPage === totalPages}
+                    onClick={() => setCurrentPage(currentPage + 1)}
+                >
+                    Suivant
+                </button>
+            </div>
         </div>
     );
 };

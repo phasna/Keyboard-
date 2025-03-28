@@ -35,6 +35,10 @@ const CartPage = ({ goToNextStep }) => {
         setCartItems(storedCart);
     }, []);
 
+    useEffect(() => {
+        console.log("Panier mis à jour :", cartItems);
+    }, [cartItems]);
+
     const handleRemoveItem = (itemToRemove) => {
         const updatedCart = cartItems.filter(item => item.id !== itemToRemove.id);
         setCartItems(updatedCart);
@@ -64,13 +68,14 @@ const CartPage = ({ goToNextStep }) => {
     };
 
     return (
-        <div className="bg-gradient-to-r from-gray-800 via-black to-gray-900 min-h-screen flex flex-col items-center py-8 sm:py-10 lg:py-12 xl:mt-32">
+        <div className="bg-gradient-to-r from-gray-800 via-black to-gray-900 min-h-screen flex flex-col items-center py-8 sm:py-10 lg:py-12 xl:mt-28">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-6 sm:mb-10">Mon Panier</h1>
             <div className="w-full flex flex-col sm:flex-row gap-6 sm:gap-8 p-6">
-                {/* Section du panier */}
                 <div className="sm:w-1/2 bg-gray-700 bg-opacity-70 p-6 rounded-lg flex flex-col shadow-lg">
-                    <div className={"flex justify-end"}>
-                    <button onClick={handleClearCart} className="w-1/4 py-3 bg-red-600 text-white rounded-lg mb-6 transition hover:bg-red-700">Vider le panier</button>
+                    <div className="flex justify-end">
+                        <button onClick={handleClearCart} className="w-1/4 py-3 bg-red-600 text-white rounded-lg mb-6 transition hover:bg-red-700">
+                            Vider le panier
+                        </button>
                     </div>
                     {cartItems.length > 0 ? (
                         <div className="space-y-5 sm:space-y-6 overflow-auto flex-1">
@@ -83,9 +88,8 @@ const CartPage = ({ goToNextStep }) => {
                     )}
                 </div>
 
-                {/* Section Résumé */}
                 {cartItems.length > 0 && (
-                    <div className="sm:w-1/2 hidden bg-gray-700 bg-opacity-70 p-6 rounded-lg text-white text-sm sm:text-lg h-full lg:flex flex-col shadow-lg ">
+                    <div className="sm:w-1/2 hidden bg-gray-700 bg-opacity-70 p-6 rounded-lg text-white text-sm sm:text-lg h-full lg:flex flex-col shadow-lg">
                         <h2 className="text-2xl sm:text-3xl font-bold mb-6">Résumé du panier</h2>
                         <div className="space-y-3 sm:space-y-4 overflow-auto flex-1">
                             {cartItems.map(item => (
@@ -101,7 +105,7 @@ const CartPage = ({ goToNextStep }) => {
                         <div className="mt-6 sm:mt-8">
                             <h3 className="text-xl sm:text-2xl font-bold">Total: ${getTotalPrice().toFixed(2)}</h3>
                             <button
-                                onClick={() => goToNextStep(2)}
+                                onClick={() => goToNextStep(2, cartItems)}
                                 className="mt-4 py-3 w-full bg-green-500 rounded-lg transition hover:bg-green-700">
                                 Passer à la livraison
                             </button>

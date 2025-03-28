@@ -5,6 +5,7 @@ import ShopList from "./Page/ShopList.jsx";
 import About from "./Page/about.jsx";
 import ProductDetail from "../src/Compenent/ShopList/ProductDedail.jsx";
 import Pagner from "../src/Compenent/Panier/StepGroupe.jsx";
+import Summay from "../src/Compenent/Panier/Summary.jsx";
 import AddProduct from "../src/Compenent/AddProduct/addProduct.jsx";
 import UpdateProduct from "../src/Compenent/AddProduct/updateProduct.jsx";
 
@@ -56,6 +57,7 @@ function App() {
                                 <Route path="/about" element={<About/>}/>
                                 <Route path="/contact" element={<Contact/>}/>
                                 <Route path="/panier" element={<Pagner/>}/>
+                                <Route path="/Summay" element={<Summay/>}/>
                                 <Route path="/product/:productId" component={ProductDetail} />
                             </Route>
 

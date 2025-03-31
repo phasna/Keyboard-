@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Mar 28, 2025 at 01:20 PM
+-- Generation Time: Mar 31, 2025 at 03:01 PM
 -- Server version: 8.0.35
 -- PHP Version: 8.2.20
 
@@ -32,17 +32,23 @@ CREATE TABLE `Cart` (
   `clientId` int NOT NULL,
   `productId` int NOT NULL,
   `quantity` int NOT NULL,
-  `price` decimal(10,2) NOT NULL
+  `price` decimal(10,2) NOT NULL,
+  `date_commande` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `statut` enum('En cours','Terminé','Abandonné') NOT NULL DEFAULT 'En cours'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `Cart`
 --
 
-INSERT INTO `Cart` (`id`, `clientId`, `productId`, `quantity`, `price`) VALUES
-(44, 26, 2, 1, 90.00),
-(45, 26, 6, 1, 75.00),
-(46, 26, 7, 1, 99.00);
+INSERT INTO `Cart` (`id`, `clientId`, `productId`, `quantity`, `price`, `date_commande`, `statut`) VALUES
+(77, 32, 6, 1, 75.00, '2025-03-31 12:10:50', 'Abandonné'),
+(78, 32, 3, 1, 85.00, '2025-03-31 12:10:50', 'Terminé'),
+(79, 32, 7, 1, 99.00, '2025-03-31 12:10:50', 'Terminé'),
+(80, 33, 3, 1, 85.00, '2025-03-31 12:54:37', 'Abandonné'),
+(81, 34, 3, 1, 85.00, '2025-03-31 12:55:12', 'Terminé'),
+(82, 34, 2, 1, 90.00, '2025-03-31 12:55:12', 'En cours'),
+(83, 34, 1, 1, 85.00, '2025-03-31 12:55:12', 'En cours');
 
 --
 -- Triggers `Cart`
@@ -94,7 +100,9 @@ CREATE TABLE `clients` (
 --
 
 INSERT INTO `clients` (`id`, `nom`, `prenom`, `email`, `telephone`, `adresse`, `identifiant`, `date_inscription`, `mode_livraison`, `pays`, `ville`, `code_postal`, `cardNumber`, `nameCard`, `expirationDate`, `cvv`, `paymentMethod`, `id_produit`) VALUES
-(26, 'Cruz-Aun', 'phasna', 'phasna.aun@afip-formations.com', '0652473681', '1 allée des peuplier', 'phasna.aun@afip-formations.com', '2025-03-28 13:19:51', 'standard', 'fr', 'Pierre bénite', '69320', '065646646447', 'aun', '11/12', '128', 'Visa', 3);
+(32, 'Cruz-Aun', 'phasna', 'phasna.aun@afip-formations.com', '0652473681', '1 allée des peuplier', 'phasna.aun@afip-formations.com', '2025-03-31 12:10:50', 'standard', 'France', 'Pierre bénite', '69320', '065646646447', 'aun', '11/12', '128', 'Visa', 3),
+(33, 'Cruz-Aun', 'phasna', 'aun@afip-formations.com', '0652473681', '1 allée des peuplier', 'aun@afip-formations.com', '2025-03-31 12:54:37', 'standard', 'khmer', 'Pierre bénite', '69320', '1234567890', 'aun', '11/12', '128', 'PayPal', 1),
+(34, 'Cruz-Aun', 'phasna', 'ph@afip-formations.com', '0652473681', '1 allée des peuplier', 'ph@afip-formations.com', '2025-03-31 12:55:12', 'express', 'france', 'Pierre bénite', '69320', '1234567890', 'aun', '11/12', '127', 'Apple Pay', 3);
 
 --
 -- Triggers `clients`
@@ -123,34 +131,35 @@ CREATE TABLE `commandes` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Product`
+-- Table structure for table `product`
 --
 
-CREATE TABLE `Product` (
+CREATE TABLE `product` (
   `id` int NOT NULL,
   `image` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
   `price` decimal(10,2) NOT NULL,
   `rating` double NOT NULL,
-  `stock` int NOT NULL DEFAULT '0'
+  `stock` int NOT NULL DEFAULT '0',
+  `description` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `Product`
+-- Dumping data for table `product`
 --
 
-INSERT INTO `Product` (`id`, `image`, `title`, `price`, `rating`, `stock`) VALUES
-(1, 'BlocText/keyboad.png', 'Clavier 62%', 85.00, 5, 100),
-(2, 'Clavier/mecanique62.png', 'Clavier 62%', 90.00, 3, 50),
-(3, 'BlocText/keyboad.png', 'Clavier gaming', 85.00, 5, 59),
-(4, 'Clavier/gaming.png', 'Clavier bureau 62%', 80.00, 5, 88),
-(5, 'Clavier/bureau.png', 'Clavier gaming', 55.00, 5, 23),
-(6, 'Clavier/Clavier72.png', 'Clavier 72%', 75.00, 1, 77),
-(7, 'Clavier/bureau.png', 'Clavier 100%', 99.00, 1, 98),
-(10, 'BlocText/keyboad.png', 'Claver 76%', 125.00, 1, 5),
-(44, 'Clavier/bureau.png', 'Clavier mondial', 89.00, 5, 25),
-(45, 'Clavier/mecanique62.png', 'Clavier Monster', 55.00, 3, 10),
-(52, 'Clavier/mecanique.png', 'Clavier Alfa', 55.00, 4, 35);
+INSERT INTO `product` (`id`, `image`, `title`, `price`, `rating`, `stock`, `description`) VALUES
+(1, '../../../public/Clavier/Clavier72.png', 'Clavier 62%', 85.00, 5, 100, 'Clavier mécanique avec rétro-éclairage RGB, conçu pour les joueurs professionnels. Il offre une réponse rapide et une grande durabilité grâce à ses switches mécaniques.'),
+(2, '../../../public/Clavier/mecanique62.png', 'Clavier 62%', 90.00, 3, 50, 'Clavier mécanique avec switches linéaires et rétro-éclairage. Parfait pour les gamers qui recherchent une expérience fluide et rapide sans bruit excessif.'),
+(3, '../../../public/BlocText/keyboad.png', 'Clavier gaming', 85.00, 5, 59, 'Clavier gaming avec switches mécaniques pour performance optimale, doté de touches programmables et d’un éclairage RGB dynamique pour personnaliser votre setup.'),
+(4, '../../../public/Clavier/gaming.png', 'Clavier bureau 62%', 80.00, 5, 88, 'Clavier de bureau classique, idéal pour la bureautique quotidienne. Léger, compact et avec une frappe confortable, ce clavier vous accompagnera dans toutes vos tâches.'),
+(5, '../../../public/Clavier/bureau.png', 'Clavier gaming', 55.00, 5, 23, 'Clavier gaming avec touches sensibles et design ergonomique. Ce clavier est parfait pour les longues sessions de jeu grâce à sa conception et son confort.'),
+(6, '../../../public/Clavier/Clavier72.png', 'Clavier 72%', 75.00, 1, 77, 'Clavier avec finition en plastique haute résistance, offrant une expérience de frappe silencieuse et agréable. Idéal pour les environnements de travail ou les gamers recherchant un design épuré.'),
+(7, '../../../public/Clavier/bureau.png', 'Clavier 100%', 99.00, 1, 98, 'Clavier 100% mécanique avec touches durables et une réactivité sans faille. Son design élégant et ses fonctionnalités le rendent parfait pour les jeux intensifs.'),
+(10, '../../../public/BlocText/keyboad.png', 'Claver 76%', 125.00, 1, 5, 'Clavier mécanique avec design moderne et éclairage LED. Il est doté de touches programmables pour améliorer votre expérience de jeu.'),
+(44, '../../../public/Clavier/bureau.png', 'Clavier mondial', 89.00, 5, 25, 'Clavier de bureau avec touches confortables et design élégant. Il est parfait pour une utilisation prolongée avec un confort supérieur pour la saisie.'),
+(45, '../../../public/Clavier/mecanique62.png', 'Clavier Monster', 55.00, 3, 10, 'Clavier mécanique haut de gamme, idéal pour gamers professionnels. Ce clavier est conçu pour offrir des performances de pointe et une grande réactivité pendant vos sessions de jeu.'),
+(52, '../../../public/Clavier/mecanique.png', 'Clavier Alfa', 55.00, 4, 35, 'Clavier Alfa avec switches mécaniques personnalisés pour une meilleure performance et une frappe rapide. Il est conçu pour offrir une expérience utilisateur fluide et agréable.');
 
 -- --------------------------------------------------------
 
@@ -267,9 +276,9 @@ ALTER TABLE `commandes`
   ADD KEY `id_client` (`id_client`);
 
 --
--- Indexes for table `Product`
+-- Indexes for table `product`
 --
-ALTER TABLE `Product`
+ALTER TABLE `product`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -294,13 +303,13 @@ ALTER TABLE `ventes`
 -- AUTO_INCREMENT for table `Cart`
 --
 ALTER TABLE `Cart`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
 
 --
 -- AUTO_INCREMENT for table `clients`
 --
 ALTER TABLE `clients`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `commandes`
@@ -309,9 +318,9 @@ ALTER TABLE `commandes`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `Product`
+-- AUTO_INCREMENT for table `product`
 --
-ALTER TABLE `Product`
+ALTER TABLE `product`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --

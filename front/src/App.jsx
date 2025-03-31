@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Accueil from "./Page/Accueil.jsx";
 import Contact from "./Page/Contact.jsx";
 import ShopList from "./Page/ShopList.jsx";
+import ProductDetaille from "./Page/productDetailles.jsx";
 import About from "./Page/about.jsx";
 import ProductDetail from "../src/Compenent/ShopList/ProductDedail.jsx";
 import Pagner from "../src/Compenent/Panier/StepGroupe.jsx";
@@ -27,6 +28,7 @@ import ListeUser from "./Page/Admin/ListeUser.jsx";
 import AddUser from "./Page/Admin/AddUser.jsx";
 import UpdateUser from "./Page/Admin/UpdateUser.jsx";
 import AccueilAdmin from "./Page/Admin/Accueil.jsx";
+import ListeOrder from "./Page/Admin/listeOrder.jsx";
 
 
 
@@ -46,6 +48,7 @@ function App() {
                                 <Route path="/Admin_interface" element={<Menu_Admin/>}/>
                                 <Route path="/addproduct" element={<AddProduct/>}/>
                                 <Route path="/updateproduct" element={<UpdateProduct/>}/>
+                                <Route path="/Liste_des_commande" element={<ListeOrder/>}/>
                                 <Route path="/adduser" element={<AddUser/>}/>
                                 <Route path="/updateuser/:id" element={<UpdateUser/>}/>
                                 <Route path="/listeutilisateurs" element={<ListeUser/>}/>
@@ -58,7 +61,7 @@ function App() {
                                 <Route path="/contact" element={<Contact/>}/>
                                 <Route path="/panier" element={<Pagner/>}/>
                                 <Route path="/Summay" element={<Summay/>}/>
-                                <Route path="/product/:productId" component={ProductDetail} />
+                                <Route path="/product/:id" element={<ProductDetaille />} />
                             </Route>
 
                             <Route path="/Connexion" element={<Connexion/>}/>

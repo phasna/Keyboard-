@@ -15,6 +15,25 @@ router.get('/', (req, res) => {
     });
 });
 
+// Récupérer un produit par son ID
+router.get('/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const [results] = await db.promise().query('SELECT * FROM Product WHERE id = ?', [id]);
+
+        if (results.length === 0) {
+            return res.status(404).json({ message: 'Produit non trouvé' });
+        }
+
+        res.json(results[0]); // On retourne uniquement l'objet du produit
+    } catch (error) {
+        console.error('Erreur lors de la récupération du produit:', error);
+        res.status(500).json({ error: 'Erreur de récupération du produit', details: error.message });
+    }
+});
+
+
 // Ajouter un produit
 router.post('/', (req, res) => {
     const { title, price, rating, image, stock } = req.body;

@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import Logo from "../../assets/Logo/Logo_01.png";
 import { FaPlus, FaEdit, FaUserPlus, FaUserCircle,FaHome } from "react-icons/fa";
+import { FaUsers } from "react-icons/fa6";
 
 const Sidebar = () => {
     const location = useLocation();
@@ -37,6 +38,19 @@ const Sidebar = () => {
                         }`}
                     >
                         <FaPlus className="text-lg"/> Ajouter un produit
+                    </Link>
+                </li>
+
+                <li>
+                    <Link
+                        to="/Liste_des_commande"
+                        className={`flex items-center gap-3 px-4 py-4 rounded-xl transition duration-300 ${
+                            location.pathname === "/Liste_des_commande"
+                                ? "bg-white text-black font-semibold shadow-md"
+                                : "hover:bg-gray-700/50"
+                        }`}
+                    >
+                        <FaUsers className="text-lg"/> Liste des commandes
                     </Link>
                 </li>
                 <li>

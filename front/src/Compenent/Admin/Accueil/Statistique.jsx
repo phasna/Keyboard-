@@ -16,7 +16,7 @@ const StatisticsDashboard = () => {
     }, []);
 
     return (
-        <div className="p-10 overflow-y-auto">
+        <div className="px-10 py-5 overflow-y-auto">
             <h1 className="text-5xl font-light text-white mb-10">STATISTIQUE DES VENTES.</h1>
 
             <div className="grid grid-cols-3 gap-6 bg-white bg-opacity-25 p-10 rounded-xl">

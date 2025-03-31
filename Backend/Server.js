@@ -8,6 +8,8 @@ import loginRoutes from './routes/login.js';
 import enregistreRoutes from './routes/enregistre.js';
 import statistiqueRoutes from './routes/statistique_ventes.js';
 import commandeRoutes from './routes/Commande.js';
+import listeCommandeRoutes from './routes/listeCommande.js';
+import clientsRoutes from "./routes/Clients.js";
 
 
 const app = express();
@@ -32,6 +34,8 @@ app.use('/api/login', loginRoutes);
 app.use('/api/enregistre', enregistreRoutes);
 app.use('/api/statistiques_ventes', statistiqueRoutes);
 app.use('/api/commande', commandeRoutes);
+app.use('/api/listeCommande', listeCommandeRoutes);
+app.use('/api/clients', clientsRoutes);
 
 // Démarrer le serveur
 const PORT = 8000;

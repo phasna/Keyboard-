@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import axios from "axios";
 import { motion } from 'framer-motion';
 import Swal from 'sweetalert2';
+import { Link } from 'react-router-dom'; // Import du Link pour la redirection
 
 const ProductCard = ({ product, onAddToCart }) => {
     const renderStars = (rating) => {
@@ -28,7 +29,11 @@ const ProductCard = ({ product, onAddToCart }) => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
         >
-            <img src={product.image} alt={product.title} className="w-full h-40 object-cover" />
+            {/* Envelopper l'image du produit dans un Link */}
+            <Link to={`/product/${product.id}`}>
+                <img src={product.image} alt={product.title} className="w-full h-40 object-cover" />
+            </Link>
+
             <div className="p-4">
                 <h3 className="text-xl font-semibold text-white mb-2">{product.title}</h3>
                 <p className="text-lg font-medium text-white mb-2">${product.price}</p>
@@ -37,7 +42,7 @@ const ProductCard = ({ product, onAddToCart }) => {
                     onClick={() => onAddToCart(product)}
                     className="w-full py-2 px-4 bg-green-500 text-white rounded-md hover:bg-gray-800 mt-5"
                 >
-                    Add to Cart
+                    Ajouter au panier
                 </button>
             </div>
         </motion.div>

@@ -33,7 +33,7 @@ export default function AnimatedGrid() {
                 Elevate Your <br /> Designs With 3D
             </motion.h1>
 
-            <div ref={ref} className="grid grid-cols-2 gap-6 p-6">
+            <div ref={ref} className="lg:grid lg:grid-cols-2 gap-6 p-6 lg:space-y-0 space-y-4">
                 {blocks.map((block, index) => (
                     <motion.div
                         key={block.id}
@@ -47,7 +47,7 @@ export default function AnimatedGrid() {
                         <button className="text-white absolute bottom-6 left-5 flex items-center gap-2 border-2 hover:bg-white hover:text-black px-4 py-2 rounded-lg">
                             En savoir plus <FiChevronRight className="text-lg" />
                         </button>
-                        <img src={block.img} className="w-1/3 lg:block hidden" />
+                        <img src={block.img} className="lg:w-1/3 lg:block hidden" />
                     </motion.div>
                 ))}
             </div>

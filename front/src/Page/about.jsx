@@ -1,17 +1,19 @@
 import Accueil from '../Compenent/Accueil/Accueil.jsx';
 import BlocProduct from "../Compenent/Accueil/BlocProduct.jsx";
-import BlocText from "../Compenent/Accueil/BlocText.jsx";
 import Info from "../Compenent/Accueil/info.jsx";
-import Text from "../Compenent/Accueil/Text.jsx";
 import Fotter from "../Compenent/Fotter.jsx";
-import BlocImage from '../Compenent/Conatct/BlocImage.jsx';
+
+/*Importation pout smalScreen*/
+import AccueilMobile from '../Compenent/about/SamlScreen/Accueil.jsx';
+
 
 
 function App() {
     return (
         <div className="h-screen flex flex-col bg-black ">
-            {/* Accueil */}
-            <div className={"bg-black"}>
+            {/* Page pour grand écran */}
+            <div className={"bg-black "}>
+                <div className={"lg:block hidden"}>
                 <div className="flex-grow">
                     <Accueil />
                 </div>
@@ -19,6 +21,14 @@ function App() {
                 {/*<BlocImage />*/}
                 <BlocProduct />Ò
                 <Fotter/>
+                </div>
+
+                {/* Page pour petite écran */}
+                <div className={"block lg:hidden"}>
+                    <AccueilMobile />
+
+                </div>
+
 
             </div>
 

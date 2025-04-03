@@ -4,10 +4,9 @@ import Contact from "./Page/Contact.jsx";
 import ShopList from "./Page/ShopList.jsx";
 import ProductDetaille from "./Page/productDetailles.jsx";
 import About from "./Page/about.jsx";
-import ProductDetail from "../src/Compenent/ShopList/ProductDedail.jsx";
 import Pagner from "../src/Compenent/Panier/StepGroupe.jsx";
 import Summay from "../src/Compenent/Panier/Summary.jsx";
-import AddProduct from "../src/Compenent/AddProduct/addProduct.jsx";
+import AddProduct from "../src/Page/Admin/addProduct.jsx";
 import UpdateProduct from "../src/Compenent/AddProduct/updateProduct.jsx";
 
 //Layout

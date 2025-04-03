@@ -3,6 +3,9 @@ import Video from '../Compenent/about/video.jsx';
 import Bloc from '../Compenent/about/bloc.jsx';
 import TextScroll from '../Compenent/about/textScroll.jsx';
 import BlocProduct from "../Compenent/Accueil/BlocProduct.jsx";
+
+// Composant pour petite écran
+import SmallAccueil from '../Compenent/Accueil/SmallScreen/Accueil.jsx';
 import Fotter from "../Compenent/Fotter.jsx";
 
 
@@ -11,7 +14,9 @@ function App() {
         <div className="h-screen flex flex-col bg-black ">
             {/* Accueil */}
             <div className={"bg-black"}>
-                <div className="flex-grow">
+                {/*Page pour grande écran*/}
+                <div className={"lg:block hidden"}>
+                <div className="flex-grow ">
                     <Accueil/>
                 </div>
                 <div className={"lg:block hidden"}>
@@ -20,12 +25,16 @@ function App() {
                 <div className={"lg:container lg:mx-auto"}>
                     <Bloc/>
                 </div>
+                <div>
                 <TextScroll/>
-                <div className={"lg:block hidden"}>
                     <BlocProduct/>
-
+                    <Fotter/>
                 </div>
-                <Fotter/>
+                </div>
+                {/*Page pour petite écran*/}
+                <div className={"block lg:hidden"}>
+                <SmallAccueil/>
+                </div>
 
             </div>
 

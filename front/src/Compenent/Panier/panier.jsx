@@ -3,19 +3,38 @@ import PropTypes from 'prop-types';
 
 const CartItem = ({ item, onRemove, onUpdateQuantity }) => {
     return (
-        <div className="bg-gray-800 rounded-lg p-5 sm:p-6 shadow-md hover:shadow-xl transition duration-300 flex items-center justify-between ">
-            <div className="flex items-center space-x-4 sm:space-x-6 ">
-                <img src={item.image} alt={item.title} className="w-20 h-20 sm:w-24 sm:h-24 object-contain rounded-lg" />
-                <div>
-                    <h3 className="text-lg sm:text-2xl font-bold text-white">{item.title}</h3>
-                    <p className="text-sm sm:text-lg font-semibold text-gray-400">${item.price}</p>
+        <div className="bg-gray-800 rounded-lg p-4 sm:p-6 shadow-md hover:shadow-xl transition duration-300 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center space-x-4 w-full sm:w-auto">
+                <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 object-contain rounded-lg"
+                />
+                <div className="flex-1">
+                    <h3 className="text-base sm:text-lg md:text-2xl font-bold text-white line-clamp-2">{item.title}</h3>
+                    <p className="text-sm sm:text-base md:text-lg font-semibold text-gray-400">${item.price}</p>
                 </div>
             </div>
-            <div className="flex items-center space-x-4 sm:space-x-6 ">
-                <button onClick={() => onUpdateQuantity(item, -1)} className="px-3 py-2 bg-red-600 text-white rounded-md transition hover:bg-red-700">-</button>
-                <p className="text-lg sm:text-xl text-white">{item.quantity}</p>
-                <button onClick={() => onUpdateQuantity(item, 1)} className="px-3 py-2 bg-green-600 text-white rounded-md transition hover:bg-green-700">+</button>
-                <button onClick={() => onRemove(item)} className="px-4 py-2 bg-red-500 text-white rounded-md transition hover:bg-red-700">Supprimer</button>
+            <div className="flex items-center space-x-2 sm:space-x-4 w-full sm:w-auto justify-between sm:justify-start">
+                <button
+                    onClick={() => onUpdateQuantity(item, -1)}
+                    className="px-2 py-1 sm:px-3 sm:py-2 bg-red-600 text-white rounded-md transition hover:bg-red-700 text-sm sm:text-base"
+                >
+                    -
+                </button>
+                <p className="text-base sm:text-lg md:text-xl text-white">{item.quantity}</p>
+                <button
+                    onClick={() => onUpdateQuantity(item, 1)}
+                    className="px-2 py-1 sm:px-3 sm:py-2 bg-green-600 text-white rounded-md transition hover:bg-green-700 text-sm sm:text-base"
+                >
+                    +
+                </button>
+                <button
+                    onClick={() => onRemove(item)}
+                    className="px-3 py-1 sm:px-4 sm:py-2 bg-red-500 text-white rounded-md transition hover:bg-red-700 text-sm sm:text-base"
+                >
+                    Supprimer
+                </button>
             </div>
         </div>
     );
@@ -35,7 +54,7 @@ const CartPage = ({ goToNextStep }) => {
         if (Array.isArray(storedCart)) {
             setCartItems(storedCart);
         } else {
-            localStorage.setItem('cart', JSON.stringify([])); // Si corrompu, réinitialiser.
+            localStorage.setItem('cart', JSON.stringify([]));
             setCartItems([]);
         }
     }, []);
@@ -54,7 +73,7 @@ const CartPage = ({ goToNextStep }) => {
         const updatedCart = cartItems.map(item => {
             if (item.id === itemToUpdate.id) {
                 const updatedItem = { ...item, quantity: item.quantity + change };
-                return updatedItem.quantity > 0 ? updatedItem : null; // Ne pas autoriser quantité <= 0
+                return updatedItem.quantity > 0 ? updatedItem : null;
             }
             return item;
         }).filter(item => item !== null);
@@ -73,50 +92,61 @@ const CartPage = ({ goToNextStep }) => {
     };
 
     return (
-        <div className="bg-gradient-to-r from-gray-800 via-black to-gray-900 min-h-screen flex flex-col items-center py-8 sm:py-10 lg:py-12 xl:mt-28">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-6 sm:mb-10">Mon Panier</h1>
-            <div className="w-full flex flex-col sm:flex-row gap-6 sm:gap-8 p-6">
-                <div className="sm:w-1/2 bg-gray-700 bg-opacity-70 p-6 rounded-lg flex flex-col shadow-lg">
-                    <div className="flex justify-end">
-                        <button onClick={handleClearCart} className="w-1/4 py-3 bg-red-600 text-white rounded-lg mb-6 transition hover:bg-red-700">
-                            Vider le panier
-                        </button>
-                    </div>
-                    {cartItems.length > 0 ? (
-                        <div className="space-y-5 sm:space-y-6 overflow-auto flex-1">
-                            {cartItems.map(item => (
-                                <CartItem key={item.id} item={item} onRemove={handleRemoveItem} onUpdateQuantity={handleUpdateQuantity} />
-                            ))}
-                        </div>
-                    ) : (
-                        <p className="text-center text-gray-300">Votre panier est vide</p>
-                    )}
-                </div>
-
-                {cartItems.length > 0 && (
-                    <div className="sm:w-1/2 hidden bg-gray-700 bg-opacity-70 p-6 rounded-lg text-white text-sm sm:text-lg h-full lg:flex flex-col shadow-lg">
-                        <h2 className="text-2xl sm:text-3xl font-bold mb-6">Résumé du panier</h2>
-                        <div className="space-y-3 sm:space-y-4 overflow-auto flex-1">
-                            {cartItems.map(item => (
-                                <div key={item.id} className="flex justify-between items-center border-b pb-2">
-                                    <div>
-                                        <h3 className="text-sm sm:text-lg font-semibold">{item.title}</h3>
-                                        <p className="text-sm sm:text-base">Quantité: {item.quantity}</p>
-                                    </div>
-                                    <p className="text-sm sm:text-lg font-medium">${(item.price * item.quantity).toFixed(2)}</p>
-                                </div>
-                            ))}
-                        </div>
-                        <div className="mt-6 sm:mt-8">
-                            <h3 className="text-xl sm:text-2xl font-bold">Total: ${getTotalPrice().toFixed(2)}</h3>
+        <div className="bg-gradient-to-r from-gray-800 via-black to-gray-900 min-h-screen flex flex-col items-center py-6 sm:py-8 md:py-10 lg:py-12">
+            <h1 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-light text-white mb-4 sm:mb-6 md:mb-8 lg:mb-10 lg:mt-28 mt-5">Mon Panier</h1>
+            <div className="w-full max-w-7xl px-4 sm:px-8 lg:px-8">
+                <div className="flex flex-col gap-6">
+                    <div className="bg-gray-700 bg-opacity-70 p-4 sm:p-6 rounded-lg shadow-lg">
+                        <div className="flex justify-end mb-4">
                             <button
-                                onClick={() => goToNextStep(2, cartItems)}
-                                className="mt-4 py-3 w-full bg-green-500 rounded-lg transition hover:bg-green-700">
-                                Passer à la livraison
+                                onClick={handleClearCart}
+                                className="w-full sm:w-auto px-4 py-2 bg-red-600 text-white rounded-lg transition hover:bg-red-700 text-sm sm:text-base"
+                            >
+                                Vider le panier
                             </button>
                         </div>
+                        {cartItems.length > 0 ? (
+                            <div className="space-y-4 sm:space-y-6">
+                                {cartItems.map(item => (
+                                    <CartItem
+                                        key={item.id}
+                                        item={item}
+                                        onRemove={handleRemoveItem}
+                                        onUpdateQuantity={handleUpdateQuantity}
+                                    />
+                                ))}
+                            </div>
+                        ) : (
+                            <p className="text-center text-gray-300 text-sm sm:text-base">Votre panier est vide</p>
+                        )}
                     </div>
-                )}
+
+                    {cartItems.length > 0 && (
+                        <div className="bg-gray-700 bg-opacity-70 p-4 sm:p-6 rounded-lg text-white shadow-lg">
+                            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6">Résumé du panier</h2>
+                            <div className="space-y-3 sm:space-y-4 mb-6">
+                                {cartItems.map(item => (
+                                    <div key={item.id} className="flex justify-between items-center border-b pb-2 text-sm sm:text-base">
+                                        <div>
+                                            <h3 className="font-semibold line-clamp-1">{item.title}</h3>
+                                            <p>Quantité: {item.quantity}</p>
+                                        </div>
+                                        <p className="font-medium">${(item.price * item.quantity).toFixed(2)}</p>
+                                    </div>
+                                ))}
+                            </div>
+                            <div>
+                                <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-4">Total: ${getTotalPrice().toFixed(2)}</h3>
+                                <button
+                                    onClick={() => goToNextStep(2, cartItems)}
+                                    className="w-full py-2 sm:py-3 bg-green-500 rounded-lg transition hover:bg-green-700 text-sm sm:text-base"
+                                >
+                                    Passer à la livraison
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );

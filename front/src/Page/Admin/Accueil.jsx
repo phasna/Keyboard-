@@ -2,9 +2,9 @@ import WrapperGraphique from "../../Compenent/Admin/Accueil/WrapperGrapphique.js
 
 function App() {
     return (
-        <div className="h-screen flex flex-col">
+        <div className="lg:h-screen lg:flex lg:flex-col">
             {/* Accueil */}
-            <div className={"overflow-auto"}>
+            <div className={"lg:overflow-auto"}>
                 <WrapperGraphique />
             </div>
 

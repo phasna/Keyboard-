@@ -134,7 +134,7 @@ const ProductGrid = () => {
                 </select>
             </div>
 
-            <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <motion.div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 md:grid-cols-2 gap-8">
                 {currentProducts.length > 0 ? (
                     currentProducts.map(product => (
                         <ProductCard key={product.id} product={product} onAddToCart={handleAddToCart} />

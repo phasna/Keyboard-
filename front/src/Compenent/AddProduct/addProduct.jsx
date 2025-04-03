@@ -11,7 +11,8 @@ const AddProductForm = () => {
         price: '',
         rating: 1,
         image: '',
-        stock: ''
+        stock: '',
+        description: '' // Added description field
     });
     const [loading, setLoading] = useState(false);
     const [products, setProducts] = useState([]);
@@ -71,7 +72,7 @@ const AddProductForm = () => {
                 });
             }
 
-            setFormData({ id: '', title: '', price: '', rating: 1, image: '', stock: '' });
+            setFormData({ id: '', title: '', price: '', rating: 1, image: '', stock: '', description: '' });
             setShowForm(false);
             setEditMode(false);
             setEditProductId(null);
@@ -138,7 +139,8 @@ const AddProductForm = () => {
             price: product.price,
             rating: product.rating,
             image: product.image,
-            stock: product.stock
+            stock: product.stock,
+            description: product.description || '' // Include description in edit
         });
         setEditMode(true);
         setEditProductId(product.id);
@@ -182,112 +184,111 @@ const AddProductForm = () => {
                 />
             </div>
 
-                <div className="w-full p-10 overflow-auto bg-opacity-25 bg-white rounded-xl">
-                    <div className="flex justify-end mb-8">
-                        <button
-                            onClick={() => {
-                                setShowForm(true);
-                                setEditMode(false);
-                                setFormData({id: '', title: '', price: '', rating: 1, image: '', stock: ''});
-                            }}
-                            className="px-8 py-4 bg-transparent border-2 text-white rounded-lg hover:bg-white hover:text-black"
-                        >
-                            <FaPlus className="inline mr-2"/> Ajouter un produit
-                        </button>
-                    </div>
-                    <ul className="space-y-4">
-                        {currentProducts
-                            .filter(product => product.title.toLowerCase().includes(searchQuery.toLowerCase()))
-                            .map((product) => (
-                                <li key={product.id}
-                                    className="flex items-center justify-between p-4 rounded-xl shadow-md bg-black bg-opacity-10 border border-gray-200">
-                                    <div className="flex items-center gap-4">
-                                        {product.image && (
-                                            <img src={product.image} alt={product.title}
-                                                 className="w-32 h-auto object-cover"/>
-                                        )}
-                                        <div>
-                                            <h3 className="font-semibold text-lg text-white">{product.title}</h3>
-                                            <p className="text-white">${product.price} | ⭐ {product.rating}/5 |
-                                                Stock: {product.stock}</p>
-                                        </div>
+            <div className="w-full p-10 overflow-auto bg-opacity-25 bg-white rounded-xl">
+                <div className="flex justify-end mb-8">
+                    <button
+                        onClick={() => {
+                            setShowForm(true);
+                            setEditMode(false);
+                            setFormData({id: '', title: '', price: '', rating: 1, image: '', stock: '', description: ''});
+                        }}
+                        className="px-8 py-4 bg-transparent border-2 text-white rounded-lg hover:bg-white hover:text-black"
+                    >
+                        <FaPlus className="inline mr-2"/> Ajouter un produit
+                    </button>
+                </div>
+                <ul className="space-y-4">
+                    {currentProducts
+                        .filter(product => product.title.toLowerCase().includes(searchQuery.toLowerCase()))
+                        .map((product) => (
+                            <li key={product.id}
+                                className="flex items-center justify-between p-4 rounded-xl shadow-md bg-black bg-opacity-10 border border-gray-200">
+                                <div className="flex items-center gap-4">
+                                    {product.image && (
+                                        <img src={product.image} alt={product.title}
+                                             className="w-32 h-auto object-cover"/>
+                                    )}
+                                    <div>
+                                        <h3 className="font-semibold text-lg text-white">{product.title}</h3>
+                                        <p className="text-white">${product.price} | ⭐ {product.rating}/5 |
+                                            Stock: {product.stock}</p>
                                     </div>
-                                    <div className="flex gap-2">
-                                        <button
-                                            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500"
-                                            onClick={() => handleEdit(product)}>
-                                            <FaEdit className="inline mr-2"/> Modifier
-                                        </button>
-                                        <button className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500"
-                                                onClick={() => handleDelete(product.id)}>
-                                            <FaTrash className="inline mr-2"/> Supprimer
-                                        </button>
-                                    </div>
-                                </li>
-                            ))}
-                    </ul>
+                                </div>
+                                <div className="flex gap-2">
+                                    <button
+                                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500"
+                                        onClick={() => handleEdit(product)}>
+                                        <FaEdit className="inline mr-2"/> Modifier
+                                    </button>
+                                    <button className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500"
+                                            onClick={() => handleDelete(product.id)}>
+                                        <FaTrash className="inline mr-2"/> Supprimer
+                                    </button>
+                                </div>
+                            </li>
+                        ))}
+                </ul>
 
-                    <div className="flex justify-center space-x-4 mt-10">
-                        <button onClick={handlePrevPage} className="px-4 py-2 border bg-white"
-                                disabled={currentPage === 1}>
-                            Précédent
+                <div className="flex justify-center space-x-4 mt-10">
+                    <button onClick={handlePrevPage} className="px-4 py-2 border bg-white/20 text-white rounded-lg hover:bg-blue-500 hover:text-black"
+                            disabled={currentPage === 1}>
+                        Précédent
+                    </button>
+                    <div className="flex space-x-2">
+                        {Array.from({length: totalPages}, (_, index) => (
+                            <button key={index + 1} onClick={() => paginate(index + 1)}
+                                    className={`px-4 py-2 border rounded-xl ${currentPage === index + 1 ? 'bg-blue-600 text-white' : 'bg-white'}`}>
+                                {index + 1}
+                            </button>
+                        ))}
+                    </div>
+                    <button onClick={handleNextPage} className="px-4 py-2 border bg-white/20 text-white rounded-lg hover:bg-blue-500 hover:text-black"
+                            disabled={currentPage === totalPages}>
+                        Suivant
+                    </button>
+                </div>
+            </div>
+
+            {showForm && (
+                <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
+                    <div className="bg-white bg-opacity-50 p-10 rounded-lg shadow-3xl absolute right-64 w-1/2">
+                        <button
+                            className="absolute top-2 right-2 text-sm text-white bg-white hover:bg-gray-200 px-4 py-3 rounded-full "
+                            onClick={() => setShowForm(false)}>
+                            ✖
                         </button>
-                        <div className="flex space-x-2">
-                            {Array.from({length: totalPages}, (_, index) => (
-                                <button key={index + 1} onClick={() => paginate(index + 1)}
-                                        className={`px-4 py-2 border ${currentPage === index + 1 ? 'bg-blue-600 text-white' : 'bg-white'}`}>
-                                    {index + 1}
-                                </button>
-                            ))}
-                        </div>
-                        <button onClick={handleNextPage} className="px-4 py-2 border bg-white"
-                                disabled={currentPage === totalPages}>
-                            Suivant
-                        </button>
+                        <h2 className="text-4xl mb-5 font-light text-white text-center ">{editMode ? 'MODIFIER LE PRODUIT' : 'AJOUTER UN PRODUIT'}</h2>
+                        <form onSubmit={handleSubmit} className="space-y-4">
+                            <input type="text" name="title" value={formData.title} onChange={handleChange}
+                                   placeholder="Nom du produit" className="w-full p-3 border bg-black text-white rounded-lg" required/>
+                            <input type="number" name="price" value={formData.price} onChange={handleChange}
+                                   placeholder="Prix" className="w-full p-3 border bg-black text-white rounded-lg" required/>
+                            <input type="number" name="rating" value={formData.rating} onChange={handleChange}
+                                   min="1"
+                                   max="5" placeholder="Note (1-5)" className="w-full p-3 border bg-black text-white rounded-lg"/>
+                            <input type="text" name="image" value={formData.image} onChange={handleChange}
+                                   placeholder="URL de l'image" className="w-full p-3 border bg-black text-white rounded-lg" required/>
+                            <input type="number" name="stock" value={formData.stock} onChange={handleChange}
+                                   placeholder="Quantité en stock" className="w-full p-3 border bg-black text-white rounded-lg"
+                                   required/>
+                            <textarea
+                                name="description"
+                                value={formData.description}
+                                onChange={handleChange}
+                                placeholder="Description du produit"
+                                className="w-full p-3 border bg-black text-white rounded-lg"
+                                rows="4"
+                            />
+                            <button type="submit"
+                                    className="w-1/4 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-500">
+                                {loading ? 'Chargement...' : editMode ? 'Mettre à jour' : 'Ajouter'}
+                            </button>
+                        </form>
                     </div>
                 </div>
+            )}
+        </motion.div>
+    );
+};
 
-                {showForm && (
-                    <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
-                        <div className="bg-white bg-opacity-50 p-10 rounded-lg shadow-3xl absolute right-64 w-1/2">
-                            <button
-                                className="absolute top-2 right-2 text-sm text-white bg-white hover:bg-gray-200 px-4 py-3 rounded-full "
-                                onClick={() => setShowForm(false)}>
-                                ✖
-                            </button>
-                            <h2 className="text-4xl mb-5 font-light text-white text-center ">{editMode ? 'MODIFIER LE PRODUIT' : 'AJOUTER UN PRODUIT'}</h2>
-                            <form onSubmit={handleSubmit} className="space-y-4">
-                                <input
-                                    type="text"
-                                    name="id"
-                                    value={formData.id}
-                                    onChange={handleChange}
-                                    placeholder="ID du produit"
-                                    className="w-full p-3 border bg-black text-white rounded-lg"
-                                    required
-                                />
-                                <input type="text" name="title" value={formData.title} onChange={handleChange}
-                                       placeholder="Nom du produit" className="w-full p-3 border bg-black text-white rounded-lg" required/>
-                                <input type="number" name="price" value={formData.price} onChange={handleChange}
-                                       placeholder="Prix" className="w-full p-3 border bg-black text-white rounded-lg" required/>
-                                <input type="number" name="rating" value={formData.rating} onChange={handleChange}
-                                       min="1"
-                                       max="5" placeholder="Note (1-5)" className="w-full p-3 border bg-black text-white rounded-lg"/>
-                                <input type="text" name="image" value={formData.image} onChange={handleChange}
-                                       placeholder="URL de l'image" className="w-full p-3 border bg-black text-white rounded-lg" required/>
-                                <input type="number" name="stock" value={formData.stock} onChange={handleChange}
-                                       placeholder="Quantité en stock" className="w-full p-3 border bg-black text-white rounded-lg"
-                                       required/>
-                                <button type="submit"
-                                        className="w-1/4 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-500">
-                                    {loading ? 'Chargement...' : editMode ? 'Mettre à jour' : 'Ajouter'}
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                )}
-            </motion.div>
-            );
-            };
-
-            export default AddProductForm;
+export default AddProductForm;

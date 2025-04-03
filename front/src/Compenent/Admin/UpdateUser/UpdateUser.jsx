@@ -214,12 +214,14 @@ function EditUserForm() {
                             className="w-full p-3 bg-black text-white border border-gray-300 rounded-lg shadow-sm"
                         />
                     </div>
+                    <div className={"flex justify-end "}>
                     <button
                         type="submit"
-                        className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-3 rounded-lg shadow-md focus:ring-2 focus:ring-blue-500 transition duration-300"
+                        className="w-1/4 bg-green-500 hover:bg-green-600 text-white p-3 rounded-lg shadow-md "
                     >
                         Modifier
                     </button>
+                    </div>
                 </form>
             </div>
         </motion.div>

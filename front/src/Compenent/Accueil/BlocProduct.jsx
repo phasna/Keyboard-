@@ -24,23 +24,22 @@ const ProductCard = ({ product, onAddToCart }) => {
 
     return (
         <motion.div
-            className="bg-zinc-500 bg-opacity-60 shadow-md rounded-lg overflow-hidden transform transition-transform hover:scale-105 hover:shadow-lg p-10"
+            className="bg-zinc-500 bg-opacity-60 shadow-md rounded-lg overflow-hidden transform transition-transform hover:scale-105 hover:shadow-lg p-5 sm:p-10"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
         >
-            {/* Envelopper l'image du produit dans un Link */}
             <Link to={`/product/${product.id}`}>
                 <img src={product.image} alt={product.title} className="w-full h-40 object-cover" />
             </Link>
 
             <div className="p-4">
-                <h3 className="text-xl font-semibold text-white mb-2">{product.title}</h3>
-                <p className="text-lg font-medium text-white mb-2">${product.price}</p>
-                <div className="flex items-center mb-2">{renderStars(product.rating)}</div>
+                <h3 className="text-lg sm:text-xl font-semibold text-white mb-2">{product.title}</h3>
+                <p className="text-md sm:text-lg font-medium text-white mb-2">${product.price}</p>
+                <div className="flex justify-start items-center mb-2">{renderStars(product.rating)}</div>
                 <button
                     onClick={() => onAddToCart(product)}
-                    className="w-full py-2 px-4 bg-green-500 text-white rounded-md hover:bg-gray-800 mt-5"
+                    className="w-full py-2 px-4 bg-green-500 text-white rounded-md hover:bg-gray-800 mt-3 sm:mt-5"
                 >
                     Ajouter au panier
                 </button>
@@ -75,28 +74,27 @@ const ProductGrid = () => {
         }
         localStorage.setItem('cart', JSON.stringify(cart));
 
-        // Afficher l'alerte SweetAlert2
         Swal.fire({
             position: 'top-end',
             icon: 'success',
             title: `${product.title} a été ajouté au panier`,
             showConfirmButton: false,
-            timer: 2000, // Affichage pendant 2 secondes
+            timer: 2000,
             toast: true,
             background: '#1a1a1a',
             color: '#fff'
         });
     };
 
-    // Limiter à 4 produits
     const displayedProducts = products.slice(0, 4);
 
     return (
-        <div className="px-10 py-10 container mx-auto">
-            <h1 className="text-5xl text-left font-light  text-green-400 mb-10 bg-gradient-to-r from-white via-gray-400 to-gray-600 text-transparent bg-clip-text">
-                PRODUITS RECOMMANDER.</h1>
+        <div className="px-5 sm:px-10 py-10 container mx-auto">
+            <h1 className="text-3xl sm:text-5xl text-left font-light text-green-400 mb-6 sm:mb-10 bg-gradient-to-r from-white via-gray-400 to-gray-600 text-transparent bg-clip-text">
+                PRODUITS RECOMMANDÉS
+            </h1>
 
-            <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
                 {displayedProducts.length > 0 ? (
                     displayedProducts.map(product => (
                         <ProductCard key={product.id} product={product} onAddToCart={handleAddToCart} />

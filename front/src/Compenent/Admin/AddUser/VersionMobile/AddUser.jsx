@@ -51,12 +51,12 @@ function AddUserForm() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
-      className="min-h-screen bg-gray-900 p-4"
+      className="min-h-screen bg-black p-4"
     >
       <div className="max-w-md mx-auto">
-        <div className="bg-gray-800 rounded-xl shadow-xl p-6 border border-gray-700">
+        <div className="bg-white/20 rounded-xl shadow-xl p-6 border border-white">
           <div className="text-center mb-8">
-            <h2 className="text-2xl font-semibold text-white">
+            <h2 className="text-4xl font-light text-white">
               Nouvel utilisateur
             </h2>
             <p className="text-gray-400 text-sm mt-1">
@@ -177,7 +177,7 @@ function AddUserForm() {
             <div className="pt-2">
               <button
                 type="submit"
-                className="w-full py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition duration-200"
+                className="w-full py-3 bg-[#FFB800] text-black font-medium rounded-3xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition duration-200"
               >
                 Créer l&apos;utilisateur
               </button>

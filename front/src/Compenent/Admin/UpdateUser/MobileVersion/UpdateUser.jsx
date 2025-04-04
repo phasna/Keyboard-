@@ -228,7 +228,7 @@ function EditUserForm() {
           <div className="flex justify-center mt-6">
             <button
               type="submit"
-              className="w-full md:w-1/3 bg-green-500 hover:bg-green-600 text-white p-3 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+              className="w-full md:w-1/3 bg-[#FFB800] hover:bg-green-600 text-black p-3 rounded-3xl shadow-md transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
             >
               Modifier
             </button>

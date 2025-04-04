@@ -123,7 +123,7 @@ const ProductDetaille = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <div className="relative overflow-hidden rounded-2xl shadow-2xl bg-gray-800 group">
+          <div className="relative overflow-hidden rounded-2xl shadow-2xl bg-[#1A1A1A] group">
             <motion.img
               src={product.image || "/path/to/default-image.jpg"}
               alt={product.title}
@@ -134,16 +134,16 @@ const ProductDetaille = () => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setIsFavorite(!isFavorite)}
-                className="bg-black/50 backdrop-blur-sm rounded-full p-3 text-white hover:text-red-500 transition-colors duration-300"
+                className="bg-black/50 backdrop-blur-sm rounded-full p-3 text-white hover:text-white transition-colors duration-300"
               >
                 <FaHeart
-                  className={`text-xl ${isFavorite ? "text-red-500" : ""}`}
+                  className={`text-xl ${isFavorite ? "text-white" : ""}`}
                 />
               </motion.button>
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className="bg-black/50 backdrop-blur-sm rounded-full p-3 text-white hover:text-blue-400 transition-colors duration-300"
+                className="bg-black/50 backdrop-blur-sm rounded-full p-3 text-white hover:text-white transition-colors duration-300"
               >
                 <FaShareAlt className="text-xl" />
               </motion.button>
@@ -158,7 +158,7 @@ const ProductDetaille = () => {
                 key={index}
                 whileHover={{ scale: 1.05 }}
                 className={`relative overflow-hidden rounded-xl cursor-pointer ${
-                  selectedImage === index - 1 ? "ring-2 ring-blue-500" : ""
+                  selectedImage === index - 1 ? "ring-2 ring-white" : ""
                 }`}
                 onClick={() => setSelectedImage(index - 1)}
               >
@@ -180,47 +180,47 @@ const ProductDetaille = () => {
         >
           <div className="space-y-4">
             <div className="flex items-center space-x-4">
-              <span className="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-sm">
+              <span className="bg-white/10 text-white px-3 py-1 rounded-full text-sm">
                 Nouveau
               </span>
-              <span className="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm">
+              <span className="bg-white/10 text-white px-3 py-1 rounded-full text-sm">
                 En stock
               </span>
             </div>
-            <h1 className="text-4xl sm:text-5xl font-bold text-gray-200">
+            <h1 className="text-4xl sm:text-5xl font-bold text-white">
               {product.title}
             </h1>
             <div className="flex items-center space-x-4">
-              <p className="text-3xl sm:text-4xl font-semibold text-green-400">
+              <p className="text-3xl sm:text-4xl font-semibold text-[#FFB800]">
                 ${product.price}
               </p>
-              <span className="text-gray-400 line-through">
+              <span className="text-[#666666] line-through">
                 ${(product.price * 1.2).toFixed(2)}
               </span>
-              <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm">
+              <span className="bg-white/10 text-white px-3 py-1 rounded-full text-sm">
                 -20%
               </span>
             </div>
-            <p className="text-gray-300 text-lg leading-relaxed">
+            <p className="text-[#CCCCCC] text-lg leading-relaxed">
               {product.description}
             </p>
           </div>
 
-          <div className="flex items-center space-x-4 bg-gray-800/50 p-4 rounded-xl backdrop-blur-sm">
+          <div className="flex items-center space-x-4 bg-[#1A1A1A] p-4 rounded-xl backdrop-blur-sm">
             <div className="flex">{renderStars(product.rating)}</div>
-            <span className="text-gray-300">({product.rating}/5)</span>
-            <span className="text-gray-400">|</span>
-            <span className="text-blue-400">12 avis</span>
+            <span className="text-[#CCCCCC]">({product.rating}/5)</span>
+            <span className="text-[#666666]">|</span>
+            <span className="text-white">12 avis</span>
           </div>
 
           <div className="space-y-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-6">
-              <label htmlFor="quantity" className="text-gray-300 text-lg">
+              <label htmlFor="quantity" className="text-[#CCCCCC] text-lg">
                 Quantité :
               </label>
-              <div className="flex items-center bg-gray-800/50 rounded-xl overflow-hidden border border-gray-600 shadow-lg backdrop-blur-sm">
+              <div className="flex items-center bg-[#1A1A1A] rounded-xl overflow-hidden border border-[#2A2A2A] shadow-lg backdrop-blur-sm">
                 <motion.button
-                  whileHover={{ backgroundColor: "#374151" }}
+                  whileHover={{ backgroundColor: "#2A2A2A" }}
                   whileTap={{ scale: 0.95 }}
                   onClick={decreaseQuantity}
                   className="px-4 py-2 text-white transition-colors duration-200 focus:outline-none"
@@ -241,7 +241,7 @@ const ProductDetaille = () => {
                   }}
                 />
                 <motion.button
-                  whileHover={{ backgroundColor: "#374151" }}
+                  whileHover={{ backgroundColor: "#2A2A2A" }}
                   whileTap={{ scale: 0.95 }}
                   onClick={increaseQuantity}
                   className="px-4 py-2 text-white transition-colors duration-200 focus:outline-none"
@@ -256,34 +256,34 @@ const ProductDetaille = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={handleAddToCart}
-              className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-2 group"
+              className="w-full sm:w-auto px-8 py-4 bg-[#FFB800] text-black rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-2 group"
             >
               <FaShoppingCart className="text-xl group-hover:rotate-12 transition-transform duration-300" />
               <span>Ajouter au panier</span>
             </motion.button>
           </div>
 
-          <div className="grid grid-cols-3 gap-4 pt-6 border-t border-gray-700">
+          <div className="grid grid-cols-3 gap-4 pt-6 border-t border-[#2A2A2A]">
             <motion.div
               whileHover={{ y: -5 }}
-              className="flex flex-col items-center space-y-2 p-4 bg-gray-800/50 rounded-xl backdrop-blur-sm"
+              className="flex flex-col items-center space-y-2 p-4 bg-[#1A1A1A] rounded-xl backdrop-blur-sm"
             >
-              <FaTruck className="text-2xl text-blue-400" />
-              <span className="text-sm text-gray-300">Livraison gratuite</span>
+              <FaTruck className="text-2xl text-white" />
+              <span className="text-sm text-[#CCCCCC]">Livraison gratuite</span>
             </motion.div>
             <motion.div
               whileHover={{ y: -5 }}
-              className="flex flex-col items-center space-y-2 p-4 bg-gray-800/50 rounded-xl backdrop-blur-sm"
+              className="flex flex-col items-center space-y-2 p-4 bg-[#1A1A1A] rounded-xl backdrop-blur-sm"
             >
-              <FaShieldAlt className="text-2xl text-green-400" />
-              <span className="text-sm text-gray-300">Garantie 2 ans</span>
+              <FaShieldAlt className="text-2xl text-white" />
+              <span className="text-sm text-[#CCCCCC]">Garantie 2 ans</span>
             </motion.div>
             <motion.div
               whileHover={{ y: -5 }}
-              className="flex flex-col items-center space-y-2 p-4 bg-gray-800/50 rounded-xl backdrop-blur-sm"
+              className="flex flex-col items-center space-y-2 p-4 bg-[#1A1A1A] rounded-xl backdrop-blur-sm"
             >
-              <FaExchangeAlt className="text-2xl text-purple-400" />
-              <span className="text-sm text-gray-300">Retour facile</span>
+              <FaExchangeAlt className="text-2xl text-white" />
+              <span className="text-sm text-[#CCCCCC]">Retour facile</span>
             </motion.div>
           </div>
 
@@ -292,19 +292,19 @@ const ProductDetaille = () => {
               whileHover={{ scale: 1.1, y: -5 }}
               whileTap={{ scale: 0.9 }}
             >
-              <FaPaypal className="text-4xl text-blue-600" />
+              <FaPaypal className="text-4xl text-white" />
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.1, y: -5 }}
               whileTap={{ scale: 0.9 }}
             >
-              <FaCcVisa className="text-4xl text-blue-500" />
+              <FaCcVisa className="text-4xl text-white" />
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.1, y: -5 }}
               whileTap={{ scale: 0.9 }}
             >
-              <FaCcMastercard className="text-4xl text-red-600" />
+              <FaCcMastercard className="text-4xl text-white" />
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.1, y: -5 }}

@@ -99,8 +99,8 @@ const CartList = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white p-6">
-      <header className="mb-8 text-center">
-        <h1 className="text-xl font-medium mb-2">Gestion des Commandes</h1>
+      <header className="mb-8 ">
+        <h1 className="text-3xl font-light mb-2">Gestion des Commandes</h1>
         <p className="text-gray-400">
           Suivez et gérez facilement toutes vos commandes
         </p>
@@ -194,7 +194,7 @@ const CartList = () => {
 
                   <button
                     onClick={() => selectCart(cart)}
-                    className="w-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white font-medium py-2 rounded-lg transition-all duration-300"
+                    className="w-full bg-[#FFB800] text-black font-medium py-3 rounded-3xl transition-all duration-300"
                   >
                     Voir détails
                   </button>
@@ -322,7 +322,7 @@ const CartList = () => {
 
                 <div className="mt-8 flex justify-end">
                   <button
-                    className="bg-red-600 hover:bg-red-700 text-white font-medium px-5 py-2 rounded-lg transition-colors"
+                    className="bg-[#FFB800] hover:bg-[#FFB800] text-black font-medium px-5 py-2 rounded-lg transition-colors"
                     onClick={closeModal}
                   >
                     Fermer

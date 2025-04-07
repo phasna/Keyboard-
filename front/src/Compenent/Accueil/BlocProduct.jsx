@@ -49,7 +49,7 @@ const ProductCard = ({ product, onAddToCart }) => {
         </div>
         <button
           onClick={() => onAddToCart(product)}
-          className="w-full py-3 px-4 bg-[#FFB800] text-black rounded-3xl hover:bg-gray-800 mt-3 sm:mt-5"
+          className="w-full py-3 px-4 bg-[#FFB800] text-gray-900 rounded-2xl hover:bg-yellow-400 mt-3 sm:mt-5"
         >
           Ajouter au panier
         </button>

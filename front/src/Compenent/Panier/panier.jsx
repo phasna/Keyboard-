@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-
+import { MdOutlineDelete } from "react-icons/md";
 const CartItem = ({ item, onRemove, onUpdateQuantity }) => {
     return (
         <div className="bg-gray-800 rounded-lg p-4 sm:p-6 shadow-md hover:shadow-xl transition duration-300 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -18,22 +18,22 @@ const CartItem = ({ item, onRemove, onUpdateQuantity }) => {
             <div className="flex items-center space-x-2 sm:space-x-4 w-full sm:w-auto justify-between sm:justify-start">
                 <button
                     onClick={() => onUpdateQuantity(item, -1)}
-                    className="px-2 py-1 sm:px-3 sm:py-2 bg-red-600 text-white rounded-md transition hover:bg-red-700 text-sm sm:text-base"
+                    className="px-2 py-1 sm:px-3 sm:py-2 bg-transparent border-2 border-white text-white rounded-md transition hover:bg-red-700 text-sm sm:text-base"
                 >
                     -
                 </button>
                 <p className="text-base sm:text-lg md:text-xl text-white">{item.quantity}</p>
                 <button
                     onClick={() => onUpdateQuantity(item, 1)}
-                    className="px-2 py-1 sm:px-3 sm:py-2 bg-green-600 text-white rounded-md transition hover:bg-green-700 text-sm sm:text-base"
+                    className="px-2 py-1 sm:px-3 sm:py-2 bg-transparent border-2 border-white text-white rounded-md transition hover:bg-green-700 text-sm sm:text-base"
                 >
                     +
                 </button>
                 <button
                     onClick={() => onRemove(item)}
-                    className="px-3 py-1 sm:px-4 sm:py-2 bg-red-500 text-white rounded-md transition hover:bg-red-700 text-sm sm:text-base"
+                    className="px-3 py-1 sm:px-2 sm:py-2 bg-red-600 text-white rounded-md transition hover:bg-red-700 sm:text-base"
                 >
-                    Supprimer
+                     <MdOutlineDelete className={"text-3xl"}/>
                 </button>
             </div>
         </div>
@@ -136,20 +136,24 @@ const CartPage = ({ goToNextStep }) => {
                                 ))}
                             </div>
                             <div>
-                                <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-4">Total: ${getTotalPrice().toFixed(2)}</h3>
-                                <button
-                                    onClick={() => goToNextStep(2, cartItems)}
-                                    className="w-full py-2 sm:py-3 bg-green-500 rounded-lg transition hover:bg-green-700 text-sm sm:text-base"
-                                >
-                                    Passer à la livraison
-                                </button>
+                                <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-4">Total:
+                                    ${getTotalPrice().toFixed(2)}</h3>
+                                <div className={"flex justify-end items-end flex-col"}>
+                                    <button
+                                        onClick={() => goToNextStep(2, cartItems)}
+                                        className="w-1/4 lg:py-4 sm:py-4 bg-transparent border-2 border-white hover:text-black rounded-2xl transition hover:bg-yellow-400 text-sm sm:text-base"
+                                    >
+                                        Passer à la livraison
+                                    </button>
+                                </div>
+
+                                </div>
                             </div>
+                            )}
                         </div>
-                    )}
-                </div>
-            </div>
-        </div>
-    );
+                        </div>
+                        </div>
+                        );
 };
 
 export default CartPage;

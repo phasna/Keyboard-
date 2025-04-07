@@ -95,8 +95,8 @@ const CartList = () => {
 
     const getStatusColor = (status) => {
         switch (status) {
-            case 'En cours': return 'bg-yellow-100 text-yellow-700';
-            case 'Terminé': return 'bg-green-100 text-green-700';
+            case 'En cours': return 'bg-yellow-300 text-yellow-700';
+            case 'Terminé': return 'bg-green-300 text-green-700';
             case 'Abandonné': return 'bg-red-100 text-red-700';
             default: return 'bg-gray-100 text-gray-700';
         }
@@ -192,14 +192,14 @@ const CartList = () => {
             </div>
             <div className="overflow-x-auto shadow-md sm:rounded-lg">
                 <table className="w-full text-sm text-left text-gray-500">
-                    <thead className="text-md text-gray-100 uppercase bg-blue-600">
+                    <thead className="text-md text-gray-900 uppercase bg-gray-400">
                     <tr>
-                        <th className="px-6 py-8">Id</th>
-                        <th className="px-6 py-8">Client</th>
-                        <th className="px-6 py-8">Produit</th>
-                        <th className="px-6 py-8">Quantité</th>
-                        <th className="px-6 py-8">Date Commande</th>
-                        <th className="px-6 py-8">Statut</th>
+                        <th className="px-6 py-5">Id</th>
+                        <th className="px-6 py-5">Client</th>
+                        <th className="px-6 py-5">Produit</th>
+                        <th className="px-6 py-5">Quantité</th>
+                        <th className="px-6 py-5">Date Commande</th>
+                        <th className="px-6 py-5">Statut</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -209,7 +209,7 @@ const CartList = () => {
                                 {cart.client ? (
                                     <button
                                         onClick={() => handleClientClick(cart.client)}
-                                        className="text-blue-600 hover:underline"
+                                        className="text-gray-900 hover:underline"
                                     >
                                         {cart.client.id}
                                     </button>
@@ -248,7 +248,7 @@ const CartList = () => {
                 <button
                     onClick={handlePreviousPage}
                     disabled={currentPage === 1}
-                    className="px-4 py-2 border rounded-lg bg-white/20 text-white cursor-pointer hover:bg-blue-600"
+                    className="px-4 py-2 border rounded-lg bg-white/20 text-white cursor-pointer hover:bg-yellow-500 hover:text-gray-900"
                 >
                     Précédent
                 </button>
@@ -256,7 +256,7 @@ const CartList = () => {
                     <button
                         key={index}
                         onClick={() => setCurrentPage(index + 1)}
-                        className={`px-4 py-2 border rounded-xl ${currentPage === index + 1 ? 'bg-blue-600 text-white' : 'bg-white'}`}
+                        className={`px-4 py-2 border rounded-xl ${currentPage === index + 1 ? 'bg-yellow-500 text-gray-900' : 'bg-white/20 text-white hover:bg-yellow-500 hover:text-gray-900'}`}
                     >
                         {index + 1}
                     </button>
@@ -264,7 +264,7 @@ const CartList = () => {
                 <button
                     onClick={handleNextPage}
                     disabled={currentPage === totalPages}
-                    className="px-4 py-2 border rounded-lg bg-white/20 text-white cursor-pointer hover:bg-blue-600"
+                    className="px-4 py-2 border rounded-lg bg-white/20 text-white cursor-pointer hover:bg-yellow-500 hover:text-gray-900"
                 >
                     Suivant
                 </button>

@@ -133,7 +133,7 @@ function AddUserForm() {
                     <div className={"flex justify-end "}>
                     <button
                         type="submit"
-                        className="w-1/4 bg-green-500 text-white p-3 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+                        className="w-1/4 bg-yellow-500 text-black p-4 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
                     >
                         Ajouter
                     </button>

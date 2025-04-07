@@ -27,7 +27,7 @@ const BentoGrid = () => {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, ease: "easeOut" }}
         >
-            <h1 className="text-7xl font-bold text-center text-green-400 my-20 bg-gradient-to-r from-white via-gray-400 to-gray-600 text-transparent bg-clip-text">
+            <h1 className="lg:block hidden text-7xl font-bold text-center text-green-400 my-20 bg-gradient-to-r from-white via-gray-400 to-gray-600 text-transparent bg-clip-text">
                 Nos qualités
             </h1>
 

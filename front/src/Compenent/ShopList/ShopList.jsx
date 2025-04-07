@@ -40,7 +40,7 @@ const ProductCard = ({ product, onAddToCart }) => {
                 <div className="flex items-center mb-2">{renderStars(product.rating)}</div>
                 <button
                     onClick={() => onAddToCart(product)}
-                    className="w-full py-2 px-4 bg-green-500 text-white rounded-md hover:bg-gray-800 mt-5"
+                    className="w-full py-3 px-6 bg-yellow-500 text-gray-900 rounded-2xl hover:bg-yellow-400 mt-5"
                 >
                     Ajouter au panier
                 </button>
@@ -146,7 +146,7 @@ const ProductGrid = () => {
 
             <div className="flex justify-center mt-8 space-x-4">
                 <button
-                    className="px-4 py-2 bg-gray-700 text-white rounded-lg"
+                    className="px-4 py-2 bg-gray-700 hover:bg-yellow-500 text-white rounded-lg"
                     disabled={currentPage === 1}
                     onClick={() => setCurrentPage(currentPage - 1)}
                 >
@@ -155,14 +155,14 @@ const ProductGrid = () => {
                 {Array.from({ length: totalPages }, (_, i) => (
                     <button
                         key={i}
-                        className={`px-4 py-2 rounded-lg ${currentPage === i + 1 ? 'bg-green-500 text-white' : 'bg-gray-700 text-gray-200'}`}
+                        className={`px-4 py-2 rounded-lg ${currentPage === i + 1 ? 'bg-yellow-500 text-black' : 'bg-gray-700 text-gray-200'}`}
                         onClick={() => setCurrentPage(i + 1)}
                     >
                         {i + 1}
                     </button>
                 ))}
                 <button
-                    className="px-4 py-2 bg-gray-700 text-white rounded-lg"
+                    className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-yellow-500"
                     disabled={currentPage === totalPages}
                     onClick={() => setCurrentPage(currentPage + 1)}
                 >

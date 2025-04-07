@@ -151,10 +151,10 @@ const UserList = () => {
                             <td className="p-4 text-center">{user.email || "Non renseigné"}</td>
                             <td className="p-4 text-center">{user.telephone || "Non renseigné"}</td>
                             <td className="p-4 text-center">{user.adresse || "Non renseignée"}</td>
-                            <td className="p-4 flex justify-center gap-4">
+                            <td className="p-4 flex justify-center gap-4 mt-5">
                                 <button
                                     onClick={() => handleEdit(user)}
-                                    className="p-3 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transform hover:scale-110 transition"
+                                    className="p-3 bg-yellow-500 text-black rounded-full shadow-lg hover:bg-yellow-400 transform hover:scale-110 transition"
                                 >
                                     <FaEdit size={20} />
                                 </button>
@@ -172,9 +172,9 @@ const UserList = () => {
             </div>
 
             {showEditModal && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70">
                     <div
-                        className="bg-opacity-25 p-6 rounded-lg w-1/2 bg-white absolute right-52"
+                        className="p-6 rounded-lg w-1/2 bg-gray-700 absolute right-52 shadow-3xl shadow-zinc-200"
                         onKeyDown={(e) => {
                             if (e.key === "Enter") handleFormSubmit();
                         }}
@@ -196,7 +196,7 @@ const UserList = () => {
                             name="id"
                             value={selectedUser.id}
                             disabled
-                            className="py-3 px-2 border rounded-lg w-full mb-4 bg-black text-white"
+                            className="py-3 px-2 border rounded-lg w-full mb-4 bg-white text-black"
                         />
                         <label className="block mb-2">Nom :</label>
                         <input
@@ -204,7 +204,7 @@ const UserList = () => {
                             name="nom"
                             value={selectedUser.nom}
                             onChange={handleFormChange}
-                            className="py-3 px-2 border rounded-lg w-full mb-4 bg-black text-white"
+                            className="py-3 px-2 border rounded-lg w-full mb-4 bg-white text-black"
                         />
                         <label className="block mb-2">Prénom :</label>
                         <input
@@ -212,7 +212,7 @@ const UserList = () => {
                             name="prenom"
                             value={selectedUser.prenom}
                             onChange={handleFormChange}
-                            className="py-3 px-2 border rounded-lg w-full mb-4 bg-black text-white"
+                            className="py-3 px-2 border rounded-lg w-full mb-4 bg-white text-black"
                         />
                         <label className="block mb-2">Email :</label>
                         <input
@@ -220,7 +220,7 @@ const UserList = () => {
                             name="email"
                             value={selectedUser.email}
                             onChange={handleFormChange}
-                            className="py-3 px-2 border rounded-lg w-full mb-4 bg-black text-white"
+                            className="py-3 px-2 border rounded-lg w-full mb-4 bg-white text-black"
                         />
                         <label className="block mb-2">Téléphone :</label>
                         <input
@@ -228,7 +228,7 @@ const UserList = () => {
                             name="telephone"
                             value={selectedUser.telephone}
                             onChange={handleFormChange}
-                            className="py-3 px-2 border rounded-lg w-full mb-4 bg-black text-white"
+                            className="py-3 px-2 border rounded-lg w-full mb-4 bg-white text-black"
                         />
                         <label className="block mb-2">Adresse :</label>
                         <input
@@ -236,7 +236,7 @@ const UserList = () => {
                             name="adresse"
                             value={selectedUser.adresse}
                             onChange={handleFormChange}
-                            className="py-3 px-2 border rounded-lg w-full mb-4 bg-black text-white"
+                            className="py-3 px-2 border rounded-lg w-full mb-4 bg-white text-black"
                         />
                         <label className="block mb-2">Mot de passe :</label>
                         <input
@@ -244,7 +244,7 @@ const UserList = () => {
                             name="mot_de_passe"
                             value={selectedUser.mot_de_passe || ""}
                             onChange={handleFormChange}
-                            className="py-3 px-2 border rounded-lg w-full mb-4 bg-black text-white"
+                            className="py-3 px-2 border rounded-lg w-full mb-4 bg-white text-black"
                         />
                         <label className="block mb-2">Image :</label>
                         <input
@@ -265,7 +265,7 @@ const UserList = () => {
                             </button>
                             <button
                                 onClick={handleFormSubmit}
-                                className="px-4 py-2 bg-green-500 text-white rounded"
+                                className="px-4 py-2 bg-yellow-500 text-black rounded"
                             >
                                 Enregistrer
                             </button>
@@ -280,8 +280,8 @@ const UserList = () => {
                     <button
                         key={index}
                         onClick={() => paginate(index + 1)}
-                        className={`px-4 py-2 mx-1 rounded-lg text-white ${
-                            currentPage === index + 1 ? "bg-blue-600" : "bg-gray-700"
+                        className={`px-4 py-2 mx-1 rounded-lg ${
+                            currentPage === index + 1 ? "bg-yellow-500 text-black" : "bg-gray-700 text-white"
                         } hover:bg-blue-500 transition`}
                     >
                         {index + 1}

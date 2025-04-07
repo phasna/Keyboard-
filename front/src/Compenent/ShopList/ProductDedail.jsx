@@ -230,7 +230,7 @@ const ProductDetaille = () => {
                 <span className="text-gray-400">({product?.rating}/5)</span>
               </div>
               <div className="flex items-center gap-4 mb-6">
-                <p className="text-3xl font-bold text-green-400">
+                <p className="text-3xl font-bold text-yellow-500">
                   ${product?.price}
                 </p>
                 <span className="text-gray-400 line-through">
@@ -248,7 +248,7 @@ const ProductDetaille = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={handleAddToCart}
-                className="flex-1 py-4 bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-xl font-semibold text-lg flex items-center justify-center gap-3 hover:from-blue-700 hover:to-blue-900 transition-all duration-300"
+                className="flex-1 py-4 bg-yellow-500 text-black rounded-xl font-medium text-lg flex items-center justify-center gap-3 hover:from-blue-700 hover:to-blue-900 transition-all duration-300"
               >
                 <FaShoppingCart />
                 Ajouter au panier
